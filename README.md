@@ -1,23 +1,57 @@
-# Audio Learning Platform
+# MixLab Academy 🎚️
 
-A nonprofit organization dedicated to making audio engineering education accessible through game-based learning. Built with Next.js 14, TypeScript, and Tailwind CSS.
+**Interactive Audio Engineering Education Platform**
+
+A modern, game-based learning platform that makes professional audio engineering skills accessible to everyone. Built with Next.js 14, TypeScript, and cutting-edge web technologies.
+
+![Next.js](https://img.shields.io/badge/Next.js-14.2.30-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3+-3178C6?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4+-06B6D4?style=flat-square&logo=tailwindcss)
+![Accessibility](https://img.shields.io/badge/WCAG-2.1%20AA-green?style=flat-square)
 
 ## 🎯 Mission
 
-We believe that quality audio engineering education should be accessible to everyone. Our platform combines the power of gamification with professional-grade learning to make audio engineering skills development engaging, effective, and free for all learners.
+To democratize audio engineering education through engaging, interactive games and exercises. We believe that quality audio engineering skills should be accessible to everyone, regardless of background or financial means.
+
+## ✨ Features
+
+### 🎮 Interactive Learning Games
+- **EQ Match**: Train your ear for frequency identification and EQ curve matching
+- **Compression Quest**: Master dynamic range control *(Coming Soon)*
+- **Mix Master**: Practice professional mixing techniques *(Coming Soon)*
+- **Reverb Runner**: Explore spatial audio and reverberation *(Coming Soon)*
+
+### 🎨 Modern User Experience
+- Beautiful gradient-based design with smooth animations
+- Fully responsive layout for desktop, tablet, and mobile
+- Dark/light mode support *(Coming Soon)*
+- Glassmorphism UI effects and modern visual polish
+
+### ♿ Accessibility First
+- WCAG 2.1 AA compliant design
+- Comprehensive screen reader support
+- Keyboard navigation throughout
+- Motion-safe animations that respect user preferences
+- Lighthouse accessibility scores of 95+ maintained
+
+### 🧪 Comprehensive Testing
+- Unit tests with Vitest and React Testing Library
+- End-to-end testing with Playwright
+- Automated accessibility auditing with Lighthouse
+- GitHub Actions CI/CD pipeline
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 20 or higher
+- Node.js 20.0.0 or higher
 - pnpm (recommended) or npm
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/nonprofit-audio-learn.git
-cd nonprofit-audio-learn
+git clone https://github.com/jtollefson47/mixlabacademy.git
+cd mixlabacademy
 
 # Install dependencies
 pnpm install
@@ -28,142 +62,140 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## 📜 Available Scripts
-
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Build production application |
-| `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint |
-| `pnpm format` | Format code with Prettier |
-| `pnpm typecheck` | Run TypeScript type checking |
-| `pnpm test` | Run unit tests with Vitest |
-| `pnpm test:e2e` | Run end-to-end tests with Playwright |
-| `pnpm e2e:install` | Install Playwright browsers |
-
-## 🧪 Testing
-
-### Unit Tests
-We use Vitest and React Testing Library for unit testing:
+### Available Scripts
 
 ```bash
-# Run unit tests
-pnpm test
+# Development
+pnpm dev          # Start development server
+pnpm build        # Create production build
+pnpm start        # Start production server
 
-# Run tests in watch mode
-pnpm test --watch
+# Code Quality
+pnpm lint         # Run ESLint
+pnpm typecheck    # Run TypeScript checks
+pnpm format       # Format code with Prettier
 
-# Run tests with coverage
-pnpm test --coverage
+# Testing
+pnpm test         # Run unit tests
+pnpm test:e2e     # Run end-to-end tests
+pnpm test:a11y    # Run accessibility tests
 ```
-
-### End-to-End Tests
-Playwright handles our E2E testing:
-
-```bash
-# Install Playwright browsers (first time only)
-pnpm e2e:install
-
-# Run E2E tests
-pnpm test:e2e
-
-# Run E2E tests in headed mode
-pnpm test:e2e --headed
-
-# Run E2E tests for specific browser
-pnpm test:e2e --project=chromium
-```
-
-## 🎮 Features
-
-### Current Games
-- **EQ Match** *(In Development)*: Train your ear to identify frequency ranges and EQ adjustments
-
-### Planned Games
-- **Compression Quest**: Master dynamic range control
-- **Mix Master**: Practice mixing techniques
-- **Reverb Runner**: Learn reverb types and applications
-- **Spectrum Detective**: Analyze frequency spectrums
-- **Mastering Challenge**: Advanced mastering techniques
 
 ## 🏗️ Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Testing**: Vitest + @testing-library/react + Playwright
-- **Linting**: ESLint + Prettier
-- **Package Manager**: pnpm
-- **CI/CD**: GitHub Actions
+### Core Framework
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **React 18** - UI library with latest features
 
-## ♿ Accessibility
+### Styling & UI
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Beautiful, accessible component library
+- **Lucide React** - Modern icon library
 
-This project prioritizes accessibility and follows WCAG AA guidelines:
+### Testing & Quality
+- **Vitest** - Fast unit testing framework
+- **Playwright** - Reliable end-to-end testing
+- **ESLint** - Code linting and quality
+- **Prettier** - Code formatting
 
-- ✅ Semantic HTML and proper landmarks
-- ✅ Keyboard navigation support
-- ✅ Screen reader compatibility
-- ✅ Focus management and visible focus indicators
-- ✅ Color contrast compliance
-- ✅ `prefers-reduced-motion` support
-- ✅ Alternative text for images
+### DevOps & Deployment
+- **GitHub Actions** - CI/CD pipeline
+- **pnpm** - Fast, efficient package manager
 
-### Accessibility Testing
-```bash
-# Manual testing checklist
-1. Navigate using only keyboard (Tab, Enter, Space, Arrow keys)
-2. Test with screen reader (VoiceOver on Mac, NVDA on Windows)
-3. Verify color contrast ratios
-4. Test with reduced motion preferences
-5. Validate HTML semantics
-```
+## 🎯 Learning Games
 
-## 🤝 Contributing
+### 🎚️ EQ Match (Available Now)
+Train your ear to identify frequency ranges and match EQ curves. Perfect for developing critical listening skills essential for professional audio work.
 
-We welcome contributions from the community! Here's how to get started:
+**Skills Developed:**
+- Frequency identification (20Hz - 20kHz)
+- EQ curve recognition
+- Critical listening techniques
+- Problem frequency detection
+
+### 🔧 Compression Quest (In Development)
+Master the art of dynamic range control through interactive challenges covering attack, release, ratio, and threshold settings.
+
+**Skills to Develop:**
+- Compression detection and analysis
+- Parameter adjustment techniques
+- Dynamic control strategies
+- Multi-band compression
+
+### 🎵 Mix Master (Planned)
+Practice professional mixing techniques with real multitrack recordings and receive instant feedback on your decisions.
+
+**Skills to Develop:**
+- Level balancing and gain staging
+- Spatial placement and panning
+- Effects processing and routing
+- Mix translation techniques
+
+## 🌟 Contributing
+
+We welcome contributions from the audio engineering and web development communities! Here's how you can help:
+
+### Ways to Contribute
+- 🐛 Report bugs and issues
+- 💡 Suggest new learning games or features
+- 📝 Improve documentation
+- 🎨 Enhance UI/UX design
+- 🧪 Add or improve tests
+- 🔧 Fix bugs and implement features
 
 ### Development Setup
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Run tests: `pnpm test && pnpm test:e2e`
-5. Commit your changes: `git commit -m 'Add amazing feature'`
-6. Push to your branch: `git push origin feature/amazing-feature`
-7. Open a Pull Request
+3. Make your changes and test thoroughly
+4. Commit with descriptive messages: `git commit -m 'Add amazing feature'`
+5. Push to your fork: `git push origin feature/amazing-feature`
+6. Open a Pull Request
 
-### Code Standards
-- Write TypeScript with strict type checking
-- Follow ESLint and Prettier configurations
-- Write tests for new features
-- Ensure accessibility compliance
-- Document complex logic
+### Code Quality Standards
+- All code must pass TypeScript checks
+- ESLint rules must be followed
+- Unit tests required for new features
+- Accessibility standards must be maintained (WCAG 2.1 AA)
+- All tests must pass before merging
 
-### Issue Reports
-When reporting issues, please include:
-- Browser and version
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if applicable
+## 📱 Browser Support
+
+- **Chrome/Chromium** 90+ (recommended for full feature support)
+- **Firefox** 88+
+- **Safari** 14+
+- **Edge** 90+
+
+*Note: Some advanced audio features may require modern browser APIs*
+
+## 🔒 Privacy & Security
+
+- No personal data collection
+- No tracking or analytics
+- All processing happens locally in the browser
+- Regular security audits with automated tools
+- HTTPS-only in production
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🌟 Support
+## 🙏 Acknowledgments
 
-If you find this project helpful, please consider:
-- ⭐ Starring the repository
-- 🐛 Reporting bugs
-- 💡 Suggesting features
-- 💰 [Donating](https://audiolearning.org/donate) to support development
+- **Audio Engineering Community** - For feedback and educational insights
+- **Web Accessibility Initiative** - For accessibility guidelines and standards
+- **Open Source Contributors** - For the amazing tools and libraries that make this possible
+- **Students and Educators** - For helping us understand learning needs
 
-## 📞 Contact
+## � Links
 
-- 🌐 Website: [https://audiolearning.org](https://audiolearning.org)
-- 📧 Email: [contact@audiolearning.org](mailto:contact@audiolearning.org)
-- 💬 Discord: [Join our community](https://discord.gg/audiolearning)
+- **Live Demo**: [Coming Soon]
+- **Documentation**: [Wiki](https://github.com/jtollefson47/mixlabacademy/wiki)
+- **Issues**: [GitHub Issues](https://github.com/jtollefson47/mixlabacademy/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/jtollefson47/mixlabacademy/discussions)
 
 ---
 
-**Audio Learning Platform** - *Making audio engineering education accessible to everyone* 🎵
+**Made with ❤️ for the audio engineering community**
+
+*Empowering the next generation of audio professionals through accessible, engaging education.*
