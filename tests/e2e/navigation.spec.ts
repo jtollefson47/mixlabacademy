@@ -47,7 +47,7 @@ test.describe('Navigation Flow', () => {
     await expect(page).toHaveURL('/games')
 
     // Check that the EQ Match game card is present
-    await expect(page.getByText(/eq match/i)).toBeVisible({ timeout: 10000 })
+    await expect(page.getByRole('heading', { name: /eq match/i })).toBeVisible({ timeout: 10000 })
     
     // Check for the specific EQ Match Play Now button in the available games section
     const availableGamesSection = page.locator('section').filter({ hasText: 'Available Now' })

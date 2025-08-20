@@ -15,11 +15,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        {/* Skip to content link */}
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-
         {/* Hero Section */}
         <section id="main-content" aria-labelledby="hero-heading" className="text-center section-spacing-lg">
           <div className="mb-8 animate-fade-in">
