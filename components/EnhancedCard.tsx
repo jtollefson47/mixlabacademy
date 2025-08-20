@@ -93,7 +93,7 @@ export function StatCard({
               <p className="text-xs text-muted-foreground mt-1">{description}</p>
             )}
             {change && (
-              <p className={cn("text-xs mt-1", changeColors[changeType])}>
+              <p className={cn('text-xs mt-1', changeColors[changeType])}>
                 {change}
               </p>
             )}

@@ -73,11 +73,11 @@ export function NavBar() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      'inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       isCurrentPage
-                        ? "nav-button-active"
-                        : "nav-button-inactive"
+                        ? 'nav-button-active'
+                        : 'nav-button-inactive'
                     )}
                     aria-current={isCurrentPage ? 'page' : undefined}
                   >

@@ -86,6 +86,10 @@ export default function OnboardingPage() {
       }
 
       // Update user profile in Supabase
+      if (!user?.id) {
+        throw new Error('User not authenticated');
+      }
+
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
@@ -96,7 +100,7 @@ export default function OnboardingPage() {
           onboarding_completed: true,
           updated_at: new Date().toISOString()
         })
-        .eq('id', user?.id!); // User is guaranteed to exist at this point
+        .eq('id', user.id);
 
       if (profileError) {
         console.error('Profile update error:', profileError);

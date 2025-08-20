@@ -309,8 +309,8 @@ export default function PhaseAlignmentGame() {
       <div className="flex gap-2">
         <Button
           onClick={() => setIsPlaying(!isPlaying)}
-          variant={isPlaying ? "destructive" : "default"}
-          size="sm"
+          variant={isPlaying ? 'destructive' : 'default'}
+          size='sm'
         >
           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
         </Button>
@@ -430,7 +430,7 @@ export default function PhaseAlignmentGame() {
 
       {/* Game Over Modal */}
       {gameState.completed && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50">
           <Card className="card-shadow w-96 mx-4">
             <CardHeader>
               <CardTitle>Game Complete!</CardTitle>

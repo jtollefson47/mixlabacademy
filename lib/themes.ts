@@ -1,6 +1,6 @@
 /**
  * Comprehensive Theme System for Aesthetic Experimentation
- * Updated with additional themes including Dark Academia, Retro 50s/60s, and more
+ * All themes use solid backgrounds to comply with style guide
  */
 
 export interface Theme {
@@ -19,136 +19,130 @@ export const themes: Record<string, Theme> = {
     primary: 'hsl(221.2, 83.2%, 53.3%)',
     secondary: 'hsl(210, 40%, 96%)',
     accent: 'hsl(268, 83%, 58%)',
-    background: 'bg-slate-50',
-    description: 'Clean, professional default theme'
+    background: 'bg-background',
+    description: 'The original MixLab Academy theme'
   },
 
-  studioDark: {
-    name: 'Studio Dark',
-    primary: 'hsl(210, 15%, 95%)', // Much brighter for better contrast
-    secondary: 'hsl(220, 15%, 25%)', // Lighter secondary
-    accent: 'hsl(47, 100%, 70%)', // Brighter accent
-    background: 'bg-slate-900',
-    description: 'Professional studio environment with high contrast'
+  // Retro Themes
+  retro1950s: {
+    name: 'Retro 1950s',
+    primary: 'hsl(0, 76%, 50%)',
+    secondary: 'hsl(185, 35%, 28%)',
+    accent: 'hsl(45, 100%, 50%)',
+    background: 'bg-amber-50',
+    description: 'Classic atomic age and diner aesthetics'
   },
 
-  // Enhanced Requested Themes
+  retro1960s: {
+    name: 'Retro 1960s',
+    primary: 'hsl(300, 76%, 72%)',
+    secondary: 'hsl(60, 100%, 75%)',
+    accent: 'hsl(195, 100%, 50%)',
+    background: 'bg-cyan-50',
+    description: 'Groovy 60s vibes with bold patterns'
+  },
+
+  // Modern Themes
+  darkMode: {
+    name: 'Dark Mode',
+    primary: 'hsl(0, 0%, 90%)',
+    secondary: 'hsl(0, 0%, 10%)',
+    accent: 'hsl(268, 83%, 58%)',
+    background: 'bg-zinc-950',
+    description: 'Dark mode for low-light environments'
+  },
+
+  cyberpunk: {
+    name: 'Cyberpunk',
+    primary: 'hsl(315, 100%, 50%)',
+    secondary: 'hsl(180, 100%, 50%)',
+    accent: 'hsl(60, 100%, 50%)',
+    background: 'bg-purple-950',
+    description: 'Futuristic neon cyberpunk aesthetic'
+  },
+
+  // Nature Themes
+  sunset: {
+    name: 'Sunset',
+    primary: 'hsl(14, 100%, 57%)',
+    secondary: 'hsl(45, 93%, 47%)',
+    accent: 'hsl(348, 83%, 47%)',
+    background: 'bg-orange-100',
+    description: 'Warm sunset colors and golden hour'
+  },
+
+  forest: {
+    name: 'Forest',
+    primary: 'hsl(125, 71%, 66%)',
+    secondary: 'hsl(142, 71%, 45%)',
+    accent: 'hsl(159, 64%, 52%)',
+    background: 'bg-green-100',
+    description: 'Natural forest greens and earth tones'
+  },
+
+  // Academic Themes
   darkAcademia: {
     name: 'Dark Academia',
-    primary: 'hsl(35, 80%, 85%)', // Much brighter gold
-    secondary: 'hsl(30, 25%, 25%)', // Lighter for better readability
-    accent: 'hsl(45, 100%, 75%)', // Brighter accent
-    background: 'bg-gradient-to-br from-amber-950 via-stone-900 to-yellow-900',
-    description: 'Scholarly libraries with leather and gold'
+    primary: 'hsl(25, 45%, 37%)',
+    secondary: 'hsl(60, 30%, 89%)',
+    accent: 'hsl(0, 65%, 51%)',
+    background: 'bg-purple-950',
+    description: 'Classic scholarly dark aesthetic'
   },
 
-  retro50s: {
-    name: 'Retro 50s/60s',
-    primary: 'hsl(195, 100%, 45%)',
-    secondary: 'hsl(50, 100%, 90%)',
-    accent: 'hsl(345, 100%, 55%)',
-    background: 'bg-gradient-to-br from-cyan-200 via-yellow-100 to-pink-200',
-    description: 'Mid-century diner with bold colors'
+  minimalist: {
+    name: 'Minimalist',
+    primary: 'hsl(0, 0%, 20%)',
+    secondary: 'hsl(0, 0%, 96%)',
+    accent: 'hsl(0, 0%, 60%)',
+    background: 'bg-gray-50',
+    description: 'Clean minimalist design'
   },
 
-  darkMinimal: {
-    name: 'Dark Minimalist',
-    primary: 'hsl(0, 0%, 98%)', // Almost white for maximum contrast
-    secondary: 'hsl(0, 0%, 15%)', // Lighter secondary
-    accent: 'hsl(0, 0%, 75%)', // Much brighter accent
-    background: 'bg-gradient-to-br from-zinc-950 via-gray-950 to-slate-950',
-    description: 'Pure minimalism in dark tones with high contrast'
+  // Tech Themes
+  matrix: {
+    name: 'Matrix',
+    primary: 'hsl(120, 100%, 25%)',
+    secondary: 'hsl(120, 100%, 50%)',
+    accent: 'hsl(120, 100%, 75%)',
+    background: 'bg-blue-950',
+    description: 'Green matrix code aesthetic'
   },
 
-  // Enhanced Original Themes
-  neonCyber: {
-    name: 'Neon Cyber',
-    primary: 'hsl(315, 100%, 75%)', // Brighter neon pink
-    secondary: 'hsl(280, 100%, 20%)', // Slightly lighter
-    accent: 'hsl(180, 100%, 60%)', // Brighter cyan
-    background: 'bg-gradient-to-br from-purple-950 via-fuchsia-900 to-cyan-900',
-    description: 'Cyberpunk with electric neon accents'
+  neonNights: {
+    name: 'Neon Nights',
+    primary: 'hsl(300, 100%, 75%)',
+    secondary: 'hsl(280, 100%, 50%)',
+    accent: 'hsl(320, 100%, 50%)',
+    background: 'bg-purple-100',
+    description: 'Bright neon colors for night owls'
   },
 
-  warmAnalog: {
-    name: 'Warm Analog',
-    primary: 'hsl(25, 95%, 50%)',
-    secondary: 'hsl(45, 87%, 85%)',
-    accent: 'hsl(350, 89%, 55%)',
-    background: 'bg-gradient-to-br from-orange-100 via-amber-50 to-red-100',
-    description: 'Vintage tube amp warmth'
+  // Seasonal Themes
+  deepWinter: {
+    name: 'Deep Winter',
+    primary: 'hsl(210, 100%, 20%)',
+    secondary: 'hsl(220, 70%, 30%)',
+    accent: 'hsl(200, 100%, 70%)',
+    background: 'bg-green-950',
+    description: 'Deep winter blues and whites'
   },
 
-  forestGreen: {
-    name: 'Forest Studio',
-    primary: 'hsl(142, 76%, 40%)',
-    secondary: 'hsl(60, 5%, 90%)',
-    accent: 'hsl(45, 100%, 55%)',
-    background: 'bg-gradient-to-br from-green-100 via-emerald-50 to-teal-100',
-    description: 'Natural studio environment'
+  warmAutumn: {
+    name: 'Warm Autumn',
+    primary: 'hsl(25, 75%, 47%)',
+    secondary: 'hsl(45, 100%, 51%)',
+    accent: 'hsl(0, 100%, 50%)',
+    background: 'bg-orange-200',
+    description: 'Cozy autumn warmth and comfort'
   },
 
-  // Enhanced Fun Themes
-  synthwave: {
-    name: 'Synthwave',
-    primary: 'hsl(320, 100%, 70%)', // Brighter neon pink
-    secondary: 'hsl(280, 100%, 25%)', // Lighter dark purple
-    accent: 'hsl(180, 100%, 55%)', // Brighter cyan
-    background: 'bg-gradient-to-br from-purple-950 via-pink-900 to-indigo-950',
-    description: '80s retrowave with neon grids'
-  },
-
-  monochrome: {
-    name: 'Monochrome Pro',
-    primary: 'hsl(0, 0%, 15%)',
-    secondary: 'hsl(0, 0%, 97%)',
-    accent: 'hsl(0, 0%, 50%)',
-    background: 'bg-gradient-to-br from-gray-50 via-neutral-100 to-stone-50',
-    description: 'Professional black and white'
-  },
-
-  oceanDepth: {
-    name: 'Ocean Depth',
-    primary: 'hsl(200, 100%, 55%)', // Much brighter blue
-    secondary: 'hsl(220, 100%, 15%)', // Lighter secondary
-    accent: 'hsl(180, 100%, 50%)', // Brighter cyan
-    background: 'bg-gradient-to-br from-blue-950 via-indigo-900 to-slate-950',
-    description: 'Deep ocean studio vibes with high contrast'
-  },
-
-  lavenderDream: {
-    name: 'Lavender Dream',
-    primary: 'hsl(280, 50%, 55%)',
-    secondary: 'hsl(300, 30%, 95%)',
-    accent: 'hsl(320, 70%, 65%)',
-    background: 'bg-gradient-to-br from-purple-100 via-violet-50 to-fuchsia-100',
-    description: 'Soft lavender workspace'
-  },
-
-  neonGreen: {
-    name: 'Matrix Green',
-    primary: 'hsl(120, 100%, 55%)', // Much brighter green
-    secondary: 'hsl(120, 100%, 10%)', // Slightly lighter dark
-    accent: 'hsl(60, 100%, 55%)', // Brighter yellow
-    background: 'bg-gradient-to-br from-green-950 via-emerald-900 to-black',
-    description: 'Digital matrix aesthetic with high contrast'
-  },
-
-  rustAutumn: {
-    name: 'Rust & Autumn',
-    primary: 'hsl(25, 75%, 40%)',
-    secondary: 'hsl(35, 40%, 90%)',
-    accent: 'hsl(15, 85%, 50%)',
-    background: 'bg-gradient-to-br from-orange-200 via-amber-100 to-red-200',
-    description: 'Warm autumn colors'
-  },
-
-  sunset: {
-    name: 'Sunset Vibes',
-    primary: 'hsl(340, 82%, 48%)',
-    secondary: 'hsl(25, 95%, 90%)',
-    accent: 'hsl(60, 100%, 45%)',
-    background: 'bg-gradient-to-br from-pink-300 via-orange-200 to-yellow-300',
-    description: 'Golden hour warmth'
+  springFresh: {
+    name: 'Spring Fresh',
+    primary: 'hsl(85, 85%, 75%)',
+    secondary: 'hsl(50, 100%, 80%)',
+    accent: 'hsl(15, 100%, 70%)',
+    background: 'bg-pink-300',
+    description: 'Fresh spring colors and new growth'
   }
 }

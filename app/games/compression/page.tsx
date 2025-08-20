@@ -2,9 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import GameLayout from '@/components/GameLayout'
-import { Play, Pause, RotateCcw, Volume2, Zap, Activity } from 'lucide-react'
+import { Play, Pause, RotateCcw } from 'lucide-react'
 
 interface CompressionSettings {
   threshold: number
@@ -321,8 +320,8 @@ export default function CompressionGame() {
 
   return (
     <GameLayout
-      title="Compression Master"
-      description="Learn compression by matching target settings"
+      title='Compression Master'
+      description='Learn compression by matching target settings'
       gameStats={{
         score: gameState.score,
         level: gameState.level,
@@ -370,7 +369,7 @@ export default function CompressionGame() {
       `}</style>
       <div className="max-w-4xl mx-auto">
         {/* Compressor Unit */}
-        <div className="bg-gradient-to-b from-gray-700 to-gray-900 p-8 rounded-lg border-2 border-gray-600 shadow-2xl">
+        <div className="bg-gray-800 p-8 rounded-lg border-2 border-gray-600 shadow-2xl">
           {/* Header */}
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-white mb-2">COMPRESSOR</h2>
@@ -529,8 +528,8 @@ export default function CompressionGame() {
                 <div className="flex gap-3">
                   <Button 
                     onClick={() => setIsPlaying(!isPlaying)}
-                    variant={isPlaying ? "destructive" : "default"}
-                    size="lg"
+                    variant={isPlaying ? 'destructive' : 'default'}
+                    size='lg'
                     className="w-20"
                   >
                     {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}

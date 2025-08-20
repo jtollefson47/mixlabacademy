@@ -172,7 +172,7 @@ export default function EqMatchPage() {
 
       {/* Score Display */}
       {currentScore && (
-        <Card className="card-shadow hover:shadow-lg transition-shadow duration-300 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-950 dark:to-blue-950">
+        <Card className="card-shadow hover:shadow-lg transition-shadow duration-300 bg-green-50 dark:bg-green-950">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span role="img" aria-label="Score">🏆</span>

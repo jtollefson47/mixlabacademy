@@ -153,8 +153,8 @@ function GameCard({ game }: { game: GameConfig }) {
   const IconComponent = game.icon
   const isAvailable = game.status === 'available'
   const cardClasses = isAvailable 
-    ? "hover-lift card-shadow group"
-    : "glass opacity-75 border-dashed border-glow motion-safe:hover:opacity-90 motion-safe:transition-all"
+    ? 'hover-lift card-shadow group'
+    : 'glass opacity-75 border-dashed border-glow motion-safe:hover:opacity-90 motion-safe:transition-all'
 
   return (
     <Card role="listitem" className={cardClasses}>
@@ -177,8 +177,8 @@ function GameCard({ game }: { game: GameConfig }) {
           <div className="flex items-center justify-between text-xs text-muted-foreground" aria-label="Game details">
             <span aria-label="Duration">⏱️ {game.duration}</span>
             <DifficultyIcon level={game.difficulty} />
-            <span aria-label="Status" className={isAvailable ? "text-green-600 font-medium" : ""}>
-              {isAvailable ? "⭐ Available" : "🚧 In Development"}
+            <span aria-label="Status" className={isAvailable ? 'text-green-600 font-medium' : ''}>
+              {isAvailable ? '⭐ Available' : '🚧 In Development'}
             </span>
           </div>
           {isAvailable && game.route ? (

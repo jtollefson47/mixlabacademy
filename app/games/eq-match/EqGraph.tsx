@@ -328,8 +328,8 @@ export function EqGraph({ targetBands, userBands, onBandsChange, className = '' 
                 x2={GRAPH_WIDTH - PADDING}
                 y2={gainToY(gain)}
                 stroke="#6b7280"
-                strokeWidth={gain === 0 ? "2" : "1"}
-                opacity={gain === 0 ? "0.8" : "0.4"}
+                strokeWidth={gain === 0 ? '2' : '1'}
+                opacity={gain === 0 ? '0.8' : '0.4'}
               />
               <text
                 x={PADDING - 10}
@@ -406,9 +406,9 @@ export function EqGraph({ targetBands, userBands, onBandsChange, className = '' 
                   cy={gainToY(band.gainDb)}
                   r={Math.max(15, Math.min(50, 15 + band.q * 8))}
                   fill="none"
-                  stroke={isSelected ? "#60a5fa" : "#3b82f6"}
-                  strokeWidth={isSelected ? "2" : "1"}
-                  opacity="0.2"
+                  stroke={isSelected ? '#60a5fa' : '#3b82f6'}
+                  strokeWidth={isSelected ? '2' : '1'}
+                  opacity='0.2'
                   style={{ pointerEvents: 'none' }}
                 />
                 
@@ -416,10 +416,10 @@ export function EqGraph({ targetBands, userBands, onBandsChange, className = '' 
                 <circle
                   cx={freqToX(band.freq)}
                   cy={gainToY(band.gainDb)}
-                  r={isDragging ? "10" : isHovered || isSelected ? "8" : "6"}
-                  fill={isSelected ? "#60a5fa" : "#3b82f6"}
-                  stroke={isSelected ? "#2563eb" : "#1d4ed8"}
-                  strokeWidth="2"
+                  r={isDragging ? '10' : isHovered || isSelected ? '8' : '6'}
+                  fill={isSelected ? '#60a5fa' : '#3b82f6'}
+                  stroke={isSelected ? '#2563eb' : '#1d4ed8'}
+                  strokeWidth='2'
                   className={`transition-all duration-150 ${isDragging ? 'drop-shadow-lg' : ''}`}
                   style={{ pointerEvents: 'none' }}
                 />

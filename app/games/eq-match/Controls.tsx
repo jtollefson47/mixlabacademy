@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Button } from '@/components/ui/button';
 import type { Band } from '@/lib/eq/types';
@@ -148,7 +148,7 @@ export default function Controls({ userBands, onBandsChange, onSubmit }: Control
           <Button 
             onClick={handleSubmit}
             size="lg"
-            className="text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-lg"
+            className="text-white bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg"
           >
             Check Score
           </Button>
