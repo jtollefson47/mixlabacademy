@@ -37,7 +37,23 @@ export async function runLighthouseA11yAudit(
           deviceScaleFactor: 1,
           disabled: false,
         },
+        // Skip performance-heavy audits that can cause timeouts in CI
+        skipAudits: [
+          'largest-contentful-paint',
+          'first-contentful-paint',
+          'speed-index',
+          'cumulative-layout-shift',
+          'total-blocking-time',
+          'first-meaningful-paint',
+          'interactive',
+          'first-cpu-idle',
+          'max-potential-fid',
+        ],
       },
+    },
+    thresholds: {
+      accessibility: 95,
+      // Don't enforce performance thresholds since we're only testing accessibility
     },
   })
 
