@@ -8,8 +8,8 @@ interface SvgIconProps {
 
 export const WaveformIcon: React.FC<SvgIconProps> = ({ 
   size = 24, 
-  className = "", 
-  color = "currentColor" 
+  className = '', 
+  color = 'currentColor' 
 }) => (
   <svg 
     width={size} 
@@ -31,8 +31,8 @@ export const WaveformIcon: React.FC<SvgIconProps> = ({
 
 export const EqualizerIcon: React.FC<SvgIconProps> = ({ 
   size = 24, 
-  className = "", 
-  color = "currentColor" 
+  className = '', 
+  color = 'currentColor' 
 }) => (
   <svg 
     width={size} 
@@ -53,8 +53,8 @@ export const EqualizerIcon: React.FC<SvgIconProps> = ({
 
 export const MicrophoneIcon: React.FC<SvgIconProps> = ({ 
   size = 24, 
-  className = "", 
-  color = "currentColor" 
+  className = '', 
+  color = 'currentColor' 
 }) => (
   <svg 
     width={size} 
@@ -73,8 +73,8 @@ export const MicrophoneIcon: React.FC<SvgIconProps> = ({
 
 export const SpeakerIcon: React.FC<SvgIconProps> = ({ 
   size = 24, 
-  className = "", 
-  color = "currentColor" 
+  className = '', 
+  color = 'currentColor' 
 }) => (
   <svg 
     width={size} 
@@ -92,8 +92,8 @@ export const SpeakerIcon: React.FC<SvgIconProps> = ({
 
 export const FrequencyIcon: React.FC<SvgIconProps> = ({ 
   size = 24, 
-  className = "", 
-  color = "currentColor" 
+  className = '', 
+  color = 'currentColor' 
 }) => (
   <svg 
     width={size} 

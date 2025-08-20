@@ -27,7 +27,7 @@ export function PageWrapper({
   id = 'main-content'
 }: PageWrapperProps) {
   // Ensure all pages use solid background - never gradients
-  const baseClasses = "min-h-screen bg-background";
+  const baseClasses = 'min-h-screen bg-background';
   const pageClass = pageLayouts[variant] || pageLayouts.page;
   
   return (
@@ -42,7 +42,7 @@ export function PageWrapper({
 /**
  * Loading state component that maintains style guide compliance
  */
-export function PageLoading({ message = "Loading..." }: { message?: string }) {
+export function PageLoading({ message = 'Loading...' }: { message?: string }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -69,7 +69,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, icon, className }: PageHeaderProps) {
   return (
-    <div className={cn("mb-8", className)}>
+    <div className={cn('mb-8', className)}>
       <div className="flex items-center gap-3 mb-2">
         {icon}
         <h1 className="text-3xl font-bold text-foreground">{title}</h1>
@@ -86,7 +86,7 @@ export function PageHeader({ title, description, icon, className }: PageHeaderPr
  */
 export function AuthPageWrapper({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("min-h-screen bg-background", pageLayouts.auth, className)}>
+    <div className={cn('min-h-screen bg-background', pageLayouts.auth, className)}>
       <main role="main">
         {children}
       </main>
@@ -96,7 +96,7 @@ export function AuthPageWrapper({ children, className }: { children: ReactNode; 
 
 export function DashboardPageWrapper({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("min-h-screen bg-background", pageLayouts.dashboard, className)}>
+    <div className={cn('min-h-screen bg-background', pageLayouts.dashboard, className)}>
       <main id="main-content" className={getContainer('xl')} role="main">
         {children}
       </main>
@@ -106,7 +106,7 @@ export function DashboardPageWrapper({ children, className }: { children: ReactN
 
 export function GamePageWrapper({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("min-h-screen bg-background", pageLayouts.game, className)}>
+    <div className={cn('min-h-screen bg-background', pageLayouts.game, className)}>
       <main id="main-content" role="main">
         {children}
       </main>

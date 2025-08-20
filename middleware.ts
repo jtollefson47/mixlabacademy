@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Simple middleware - we'll disable complex auth checking for now
-export function middleware(request: NextRequest) {
+export function middleware(_request: NextRequest) {
   // Just pass through all requests for now
   return NextResponse.next();
 }

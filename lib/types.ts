@@ -111,10 +111,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "skill_assessments_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: 'skill_assessments_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -154,10 +154,10 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "game_sessions_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: 'game_sessions_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -221,16 +221,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "user_achievements_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: 'user_achievements_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "user_achievements_achievement_id_fkey"
-            columns: ["achievement_id"]
-            referencedRelation: "achievements"
-            referencedColumns: ["id"]
+            foreignKeyName: 'user_achievements_achievement_id_fkey'
+            columns: ['achievement_id']
+            referencedRelation: 'achievements'
+            referencedColumns: ['id']
           }
         ]
       }
@@ -297,16 +297,16 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "user_learning_progress_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: 'user_learning_progress_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
           },
           {
-            foreignKeyName: "user_learning_progress_learning_path_id_fkey"
-            columns: ["learning_path_id"]
-            referencedRelation: "learning_paths"
-            referencedColumns: ["id"]
+            foreignKeyName: 'user_learning_progress_learning_path_id_fkey'
+            columns: ['learning_path_id']
+            referencedRelation: 'learning_paths'
+            referencedColumns: ['id']
           }
         ]
       }

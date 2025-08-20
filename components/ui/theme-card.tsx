@@ -1,5 +1,5 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 
 /**
  * Enhanced Card component that enforces style guide compliance.
@@ -19,13 +19,13 @@ const Card = React.forwardRef<
     ref={ref}
     className={cn(
       // Enforce solid card background - never semi-transparent or gradients
-      "bg-card border-border rounded-lg border shadow-sm",
+      'bg-card border-border rounded-lg border shadow-sm',
       className
     )}
     {...props}
   />
 ))
-Card.displayName = "Card"
+Card.displayName = 'Card'
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
@@ -33,11 +33,11 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    className={cn('flex flex-col space-y-1.5 p-6', className)}
     {...props}
   />
 ))
-CardHeader.displayName = "CardHeader"
+CardHeader.displayName = 'CardHeader'
 
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -47,13 +47,13 @@ const CardTitle = React.forwardRef<
     ref={ref}
     className={cn(
       // Enforce theme text color
-      "text-2xl font-semibold leading-none tracking-tight text-card-foreground",
+      'text-2xl font-semibold leading-none tracking-tight text-card-foreground',
       className
     )}
     {...props}
   />
 ))
-CardTitle.displayName = "CardTitle"
+CardTitle.displayName = 'CardTitle'
 
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -63,21 +63,21 @@ const CardDescription = React.forwardRef<
     ref={ref}
     className={cn(
       // Enforce muted text color for descriptions
-      "text-sm text-muted-foreground",
+      'text-sm text-muted-foreground',
       className
     )}
     {...props}
   />
 ))
-CardDescription.displayName = "CardDescription"
+CardDescription.displayName = 'CardDescription'
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
 ))
-CardContent.displayName = "CardContent"
+CardContent.displayName = 'CardContent'
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
@@ -85,11 +85,11 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center p-6 pt-0", className)}
+    className={cn('flex items-center p-6 pt-0', className)}
     {...props}
   />
 ))
-CardFooter.displayName = "CardFooter"
+CardFooter.displayName = 'CardFooter'
 
 /**
  * Style guide compliant card variants for common use cases
@@ -102,11 +102,11 @@ export const ContentCard = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Card
     ref={ref}
-    className={cn("bg-card border-border", className)}
+    className={cn('bg-card border-border', className)}
     {...props}
   />
 ))
-ContentCard.displayName = "ContentCard"
+ContentCard.displayName = 'ContentCard'
 
 // Highlighted card for important content
 export const HighlightCard = React.forwardRef<
@@ -115,11 +115,11 @@ export const HighlightCard = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Card
     ref={ref}
-    className={cn("bg-card border-primary/20 shadow-md", className)}
+    className={cn('bg-card border-primary/20 shadow-md', className)}
     {...props}
   />
 ))
-HighlightCard.displayName = "HighlightCard"
+HighlightCard.displayName = 'HighlightCard'
 
 // Admin card with accent border
 export const AdminCard = React.forwardRef<
@@ -128,10 +128,10 @@ export const AdminCard = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Card
     ref={ref}
-    className={cn("bg-card border-accent/20", className)}
+    className={cn('bg-card border-accent/20', className)}
     {...props}
   />
 ))
-AdminCard.displayName = "AdminCard"
+AdminCard.displayName = 'AdminCard'
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

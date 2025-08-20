@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { MusicNoteIcon, DifficultyIcon } from '@/components/ui/theme-icons'
 import { Palette, Eye, RotateCcw, Code, Save, AlertCircle } from 'lucide-react'
 import LiveCSSEditor from './LiveCSSEditor'
-import { themes, type Theme } from '@/lib/themes'
+import { themes } from '@/lib/themes'
 
 export default function ThemeExplorer() {
   const [currentTheme, setCurrentTheme] = useState('default')
@@ -395,7 +395,7 @@ export default function ThemeExplorer() {
                     
                     <Button 
                       className="w-full transition-all duration-300" 
-                      variant={currentTheme === key ? "default" : "outline"}
+                      variant={currentTheme === key ? 'default' : 'outline'}
                       disabled={isLoading}
                       onClick={(e) => {
                         e.stopPropagation()

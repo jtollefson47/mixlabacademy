@@ -95,13 +95,13 @@ export function NavBar() {
               ) : user ? (
                 <div className="flex items-center space-x-3">
                   <Link 
-                    href="/profile" 
+                    href='/profile' 
                     className={cn(
-                      "inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      'inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       isActive('/profile')
-                        ? "nav-button-active"
-                        : "nav-button-inactive"
+                        ? 'nav-button-active'
+                        : 'nav-button-inactive'
                     )}
                   >
                     <User className="h-4 w-4" aria-hidden="true" />
@@ -185,11 +185,11 @@ export function NavBar() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium transition-colors w-full",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      'flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium transition-colors w-full',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       isCurrentPage
-                        ? "nav-button-active"
-                        : "nav-button-inactive"
+                        ? 'nav-button-active'
+                        : 'nav-button-inactive'
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                     role="menuitem"
@@ -207,11 +207,11 @@ export function NavBar() {
                   <Link
                     href="/profile"
                     className={cn(
-                      "flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium transition-colors w-full",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                      'flex items-center gap-3 px-3 py-3 rounded-lg text-base font-medium transition-colors w-full',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       isActive('/profile')
-                        ? "nav-button-active"
-                        : "nav-button-inactive"
+                        ? 'nav-button-active'
+                        : 'nav-button-inactive'
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                     role="menuitem"

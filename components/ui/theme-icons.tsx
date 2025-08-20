@@ -148,9 +148,8 @@ export function BookIcon({ size = 'md', className }: ThemeIconProps) {
 // Difficulty indicators that match theme colors
 export function DifficultyIcon({ 
   level, 
-  size = 'sm', 
   className 
-}: ThemeIconProps & { 
+}: Omit<ThemeIconProps, 'size'> & { 
   level: 'beginner' | 'intermediate' | 'advanced' | 'expert' 
 }) {
   const dots = {

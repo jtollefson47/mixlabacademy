@@ -61,7 +61,7 @@ export const typography = {
   
   // Special text treatments
   special: {
-    gradient: 'bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent',
+    gradient: 'text-primary font-medium',
     accent: 'text-primary font-medium',
     success: 'text-green-600 dark:text-green-400',
     warning: 'text-amber-600 dark:text-amber-400',
@@ -158,7 +158,7 @@ export const interactions = {
   loading: {
     spinner: 'animate-spin rounded-full h-8 w-8 border-b-2 border-primary',
     pulse: 'animate-pulse bg-muted rounded',
-    shimmer: 'animate-pulse bg-gradient-to-r from-muted via-muted/50 to-muted',
+    shimmer: 'animate-pulse bg-muted rounded',
   },
   
   // Animation classes
@@ -272,7 +272,7 @@ export const gameDesign = {
   gameCards: {
     available: 'card-shadow-lg bg-card border border-border rounded-xl hover-lift transition-all duration-200 group',
     comingSoon: 'card-shadow bg-card border border-dashed border-border/50 rounded-xl opacity-75',
-    featured: 'card-shadow-xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-xl hover-lift transition-all duration-200',
+    featured: 'card-shadow-xl bg-primary/10 border border-primary/20 rounded-xl hover-lift transition-all duration-200',
   },
   
   // Score display patterns

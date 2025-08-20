@@ -224,7 +224,7 @@ function generatePage(pageName, pageType = 'standard') {
   
   console.log(`✅ Generated ${pageType} page: ${outputPath}`)
   console.log(`📖 Description: ${template.description}`)
-  console.log(`🎨 Style guide compliant: Uses solid backgrounds and theme colors`)
+  console.log('🎨 Style guide compliant: Uses solid backgrounds and theme colors')
   console.log(`🔍 Route: /${kebabCaseName}`)
 }
 

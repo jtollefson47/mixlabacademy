@@ -22,7 +22,7 @@ test.describe('Accessibility Audits', () => {
     } catch (error) {
       // Provide more detailed error information
       throw new Error(
-        `Home page accessibility audit failed:\n` +
+        'Home page accessibility audit failed:\n' +
         `Score: ${a11yResult.score}/100 (minimum required: 95)\n` +
         `Violations: ${a11yResult.violations.length}\n` +
         `${error instanceof Error ? error.message : String(error)}`
