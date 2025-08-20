@@ -1,0 +1,248 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth/AuthProvider';
+import { 
+  Activity, 
+  Trophy, 
+  Target, 
+  TrendingUp, 
+  Users, 
+  MessageSquare, 
+  Calendar,
+  ChevronRight,
+  RefreshCw
+} from 'lucide-react';
+
+interface UserActivity {
+  id: string;
+  user_id: string;
+  activity_type: string;
+  activity_data: any;
+  created_at: string;
+  profile: {
+    username: string;
+    full_name?: string;
+  };
+}
+
+interface ActivityFeedProps {
+  userId?: string; // If provided, shows activities for specific user
+  following?: boolean; // If true, shows activities from followed users
+  limit?: number;
+}
+
+const activityIcons = {
+  'game_completed': Target,
+  'achievement_unlocked': Trophy,
+  'level_up': TrendingUp,
+  'milestone_reached': Trophy,
+  'post_created': MessageSquare,
+  'follow_user': Users
+};
+
+const activityColors = {
+  'game_completed': 'text-blue-400 bg-blue-900/20',
+  'achievement_unlocked': 'text-yellow-400 bg-yellow-900/20',
+  'level_up': 'text-green-400 bg-green-900/20',
+  'milestone_reached': 'text-purple-400 bg-purple-900/20',
+  'post_created': 'text-slate-400 bg-slate-900/20',
+  'follow_user': 'text-pink-400 bg-pink-900/20'
+};
+
+function formatActivityMessage(activity: UserActivity): string {
+  const { activity_type, activity_data, profile } = activity;
+  const username = profile.full_name || profile.username;
+
+  switch (activity_type) {
+    case 'game_completed':
+      return `${username} completed ${activity_data.game_name || 'a game'} with ${activity_data.score}% score`;
+    
+    case 'achievement_unlocked':
+      return `${username} unlocked the "${activity_data.achievement_title}" achievement`;
+    
+    case 'level_up':
+      return `${username} reached ${activity_data.level} level in ${activity_data.skill || 'audio engineering'}`;
+    
+    case 'milestone_reached':
+      return `${username} reached a new milestone: ${activity_data.milestone_name}`;
+    
+    case 'post_created':
+      return `${username} shared a new ${activity_data.post_type}: "${activity_data.title}"`;
+    
+    case 'follow_user':
+      return `${username} started following @${activity_data.target_username}`;
+    
+    default:
+      return `${username} performed an activity`;
+  }
+}
+
+export default function ActivityFeed({ userId, following = false, limit = 20 }: ActivityFeedProps) {
+  const { user } = useAuth();
+  const [activities, setActivities] = useState<UserActivity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    fetchActivities();
+  }, [userId, following]);
+
+  const fetchActivities = async (isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+
+      let query = supabase
+        .from('user_activities')
+        .select(`
+          id,
+          user_id,
+          activity_type,
+          activity_data,
+          created_at,
+          profile:profiles!user_activities_user_id_fkey(username, full_name)
+        `)
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (userId) {
+        // Show activities for specific user
+        query = query.eq('user_id', userId);
+      } else if (following && user) {
+        // Show activities from followed users
+        const { data: followedUsers } = await supabase
+          .from('user_follows')
+          .select('following_id')
+          .eq('follower_id', user.id);
+
+        if (followedUsers && followedUsers.length > 0) {
+          const followedIds = followedUsers.map(f => f.following_id);
+          query = query.in('user_id', [...followedIds, user.id]); // Include own activities
+        } else {
+          // No followed users, just show own activities
+          query = query.eq('user_id', user.id);
+        }
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      setActivities(data || []);
+    } catch (error) {
+      console.error('Error fetching activities:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    fetchActivities(true);
+  };
+
+  if (loading) {
+    return (
+      <Card className="bg-slate-800 border-slate-700">
+        <CardContent className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="bg-slate-800 border-slate-700">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Activity className="h-5 w-5 text-primary" />
+            <div>
+              <CardTitle className="text-white">
+                {userId ? 'Recent Activity' : following ? 'Following Feed' : 'Community Activity'}
+              </CardTitle>
+              <CardDescription>
+                {activities.length > 0 
+                  ? `${activities.length} recent activities`
+                  : 'No recent activities'
+                }
+              </CardDescription>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="text-slate-400 hover:text-white"
+          >
+            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {activities.length === 0 ? (
+          <div className="text-center py-8">
+            <Activity className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">No activities yet</h3>
+            <p className="text-slate-400">
+              {following 
+                ? 'Follow other users to see their activities here.'
+                : userId
+                  ? 'This user hasn\'t performed any public activities yet.'
+                  : 'Start playing games and unlocking achievements to see activities here.'
+              }
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {activities.map((activity) => {
+              const ActivityIcon = activityIcons[activity.activity_type as keyof typeof activityIcons] || Activity;
+              const iconColors = activityColors[activity.activity_type as keyof typeof activityColors] || 'text-slate-400 bg-slate-900/20';
+              
+              return (
+                <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg bg-slate-900/50 hover:bg-slate-900/70 transition-colors">
+                  <div className={`p-2 rounded-full ${iconColors}`}>
+                    <ActivityIcon className="h-4 w-4" />
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-slate-200 leading-relaxed">
+                      {formatActivityMessage(activity)}
+                    </p>
+                    
+                    <div className="flex items-center gap-4 mt-2">
+                      <div className="flex items-center gap-1 text-xs text-slate-400">
+                        <Calendar className="h-3 w-3" />
+                        <span>{new Date(activity.created_at).toLocaleDateString()}</span>
+                      </div>
+                      
+                      {activity.activity_data.target_username && (
+                        <Link 
+                          href={`/profile/${activity.activity_data.target_username}`}
+                          className="text-xs text-primary hover:underline flex items-center gap-1"
+                        >
+                          View Profile
+                          <ChevronRight className="h-3 w-3" />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

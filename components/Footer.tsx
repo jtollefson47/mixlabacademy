@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { MusicNoteIcon } from '@/components/ui/theme-icons'
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center space-x-2">
-              <span className="text-2xl">🎵</span>
+              <MusicNoteIcon size="md" />
               <span className="font-bold text-lg">Audio Learning</span>
             </div>
             <p className="text-sm text-muted-foreground">

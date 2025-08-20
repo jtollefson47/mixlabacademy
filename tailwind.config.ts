@@ -20,6 +20,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
+          'Open Sans',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
@@ -28,7 +29,6 @@ const config: Config = {
           'Roboto',
           'Helvetica Neue',
           'Arial',
-          'Noto Sans',
           'sans-serif',
         ],
       },

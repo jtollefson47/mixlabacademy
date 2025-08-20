@@ -1,0 +1,136 @@
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth/AuthProvider';
+import { UserPlus, UserMinus, Loader2 } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+
+interface FollowButtonProps {
+  targetUserId: string;
+  targetUsername: string;
+  initialIsFollowing?: boolean;
+  initialFollowerCount?: number;
+  variant?: 'default' | 'outline' | 'ghost';
+  size?: 'sm' | 'default' | 'lg';
+}
+
+export default function FollowButton({
+  targetUserId,
+  targetUsername,
+  initialIsFollowing = false,
+  initialFollowerCount = 0,
+  variant = 'default',
+  size = 'default'
+}: FollowButtonProps) {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
+  const [followerCount, setFollowerCount] = useState(initialFollowerCount);
+  const [loading, setLoading] = useState(false);
+
+  // Don't show follow button for own profile or when not authenticated
+  if (!user || user.id === targetUserId) {
+    return null;
+  }
+
+  const handleFollowToggle = async () => {
+    try {
+      setLoading(true);
+
+      if (isFollowing) {
+        // Unfollow
+        const { error } = await supabase
+          .from('user_follows')
+          .delete()
+          .eq('follower_id', user.id)
+          .eq('following_id', targetUserId);
+
+        if (error) throw error;
+
+        setIsFollowing(false);
+        setFollowerCount(prev => Math.max(0, prev - 1));
+        
+        toast({
+          title: 'Unfollowed',
+          description: `You are no longer following @${targetUsername}`,
+        });
+      } else {
+        // Follow
+        const { error } = await supabase
+          .from('user_follows')
+          .insert({
+            follower_id: user.id,
+            following_id: targetUserId
+          });
+
+        if (error) throw error;
+
+        setIsFollowing(true);
+        setFollowerCount(prev => prev + 1);
+        
+        toast({
+          title: 'Following',
+          description: `You are now following @${targetUsername}`,
+        });
+
+        // Create activity entry
+        await supabase
+          .from('user_activities')
+          .insert({
+            user_id: user.id,
+            activity_type: 'follow_user',
+            activity_data: {
+              target_user_id: targetUserId,
+              target_username: targetUsername
+            },
+            is_public: true
+          });
+      }
+    } catch (error) {
+      console.error('Error toggling follow:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update follow status. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <Button
+        variant={isFollowing ? 'outline' : variant}
+        size={size}
+        onClick={handleFollowToggle}
+        disabled={loading}
+        className={`flex items-center gap-2 ${
+          isFollowing ? 'hover:bg-red-50 hover:border-red-300 hover:text-red-600' : ''
+        }`}
+      >
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : isFollowing ? (
+          <>
+            <UserMinus className="h-4 w-4" />
+            <span className="hidden sm:inline">Unfollow</span>
+          </>
+        ) : (
+          <>
+            <UserPlus className="h-4 w-4" />
+            <span className="hidden sm:inline">Follow</span>
+          </>
+        )}
+      </Button>
+      
+      {followerCount > 0 && (
+        <span className="text-sm text-slate-400">
+          {followerCount} {followerCount === 1 ? 'follower' : 'followers'}
+        </span>
+      )}
+    </div>
+  );
+}

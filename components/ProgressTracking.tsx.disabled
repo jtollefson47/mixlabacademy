@@ -1,0 +1,393 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth/AuthProvider';
+import { 
+  TrendingUp, 
+  Target, 
+  Clock, 
+  Calendar, 
+  BarChart3, 
+  LineChart,
+  Award,
+  Zap,
+  CheckCircle,
+  Circle
+} from 'lucide-react';
+
+interface UserProgress {
+  skill_area: string;
+  current_level: number;
+  experience_points: number;
+  next_level_threshold: number;
+  games_played: number;
+  average_score: number;
+  best_score: number;
+  time_spent_minutes: number;
+  last_activity: string;
+  streak_days: number;
+}
+
+interface LearningGoal {
+  id: string;
+  title: string;
+  description: string;
+  target_score: number;
+  current_score: number;
+  target_games: number;
+  current_games: number;
+  deadline?: string;
+  completed: boolean;
+}
+
+interface ProgressTrackingProps {
+  userId: string;
+  isPublic?: boolean;
+  compact?: boolean;
+}
+
+const skillAreas = {
+  'eq_mastery': { label: 'EQ Mastery', color: 'bg-blue-500' },
+  'compression': { label: 'Compression', color: 'bg-green-500' },
+  'mixing': { label: 'Mixing', color: 'bg-purple-500' },
+  'mastering': { label: 'Mastering', color: 'bg-orange-500' }
+};
+
+// Simple Progress component
+const Progress = ({ value, className = '' }: { value: number; className?: string }) => (
+  <div className={`relative h-2 w-full overflow-hidden rounded-full bg-slate-700 ${className}`}>
+    <div
+      className="h-full bg-primary transition-all duration-300 ease-in-out"
+      style={{ width: `${Math.min(Math.max(value, 0), 100)}%` }}
+    />
+  </div>
+);
+
+export default function ProgressTracking({ userId, isPublic = true, compact = false }: ProgressTrackingProps) {
+  const { user } = useAuth();
+  const [progress, setProgress] = useState<UserProgress[]>([]);
+  const [goals, setGoals] = useState<LearningGoal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'progress' | 'goals' | 'analytics'>('progress');
+
+  const isOwnProfile = user?.id === userId;
+
+  useEffect(() => {
+    fetchProgressData();
+  }, [userId]);
+
+  const fetchProgressData = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch skill progress (mock data for now - would be calculated from game sessions)
+      const mockProgress: UserProgress[] = [
+        {
+          skill_area: 'eq_mastery',
+          current_level: 3,
+          experience_points: 1250,
+          next_level_threshold: 1500,
+          games_played: 45,
+          average_score: 78,
+          best_score: 94,
+          time_spent_minutes: 320,
+          last_activity: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          streak_days: 5
+        },
+        {
+          skill_area: 'compression',
+          current_level: 2,
+          experience_points: 680,
+          next_level_threshold: 1000,
+          games_played: 23,
+          average_score: 72,
+          best_score: 89,
+          time_spent_minutes: 180,
+          last_activity: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          streak_days: 2
+        }
+      ];
+
+      const mockGoals: LearningGoal[] = [
+        {
+          id: '1',
+          title: 'EQ Master',
+          description: 'Achieve 90% average score in EQ games',
+          target_score: 90,
+          current_score: 78,
+          target_games: 50,
+          current_games: 45,
+          deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          completed: false
+        },
+        {
+          id: '2',
+          title: 'Daily Practice',
+          description: 'Play at least one game for 7 consecutive days',
+          target_score: 7,
+          current_score: 5,
+          target_games: 7,
+          current_games: 5,
+          completed: false
+        }
+      ];
+
+      setProgress(mockProgress);
+      setGoals(mockGoals);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching progress data:', error);
+      setLoading(false);
+    }
+  };
+
+  const calculateLevelProgress = (xp: number, threshold: number) => {
+    return Math.min((xp / threshold) * 100, 100);
+  };
+
+  const formatTimeSpent = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+  };
+
+  if (loading) {
+    return (
+      <Card className="bg-slate-800 border-slate-700">
+        <CardContent className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (compact) {
+    return (
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-primary" />
+            Learning Progress
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {progress.slice(0, 2).map((skill) => {
+            const skillConfig = skillAreas[skill.skill_area as keyof typeof skillAreas];
+            return (
+              <div key={skill.skill_area} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-white">{skillConfig.label}</span>
+                  <span className="text-xs text-slate-400">Level {skill.current_level}</span>
+                </div>
+                <Progress 
+                  value={calculateLevelProgress(skill.experience_points, skill.next_level_threshold)} 
+                  className="h-2"
+                />
+                <div className="flex justify-between text-xs text-slate-400">
+                  <span>{skill.games_played} games</span>
+                  <span>{skill.average_score}% avg</span>
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Tab Navigation */}
+      <div className="flex gap-2">
+        <Button
+          variant={activeTab === 'progress' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('progress')}
+          size="sm"
+        >
+          <TrendingUp className="h-4 w-4 mr-2" />
+          Progress
+        </Button>
+        <Button
+          variant={activeTab === 'goals' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('goals')}
+          size="sm"
+        >
+          <Target className="h-4 w-4 mr-2" />
+          Goals
+        </Button>
+        <Button
+          variant={activeTab === 'analytics' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('analytics')}
+          size="sm"
+        >
+          <BarChart3 className="h-4 w-4 mr-2" />
+          Analytics
+        </Button>
+      </div>
+
+      {/* Content based on active tab */}
+      {activeTab === 'progress' && (
+        <div className="grid gap-4">
+          {progress.map((skill) => {
+            const skillConfig = skillAreas[skill.skill_area as keyof typeof skillAreas];
+            return (
+              <Card key={skill.skill_area} className="bg-slate-800 border-slate-700">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${skillConfig.color}`}></div>
+                      <div>
+                        <CardTitle className="text-white">{skillConfig.label}</CardTitle>
+                        <CardDescription>Level {skill.current_level}</CardDescription>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-slate-400">XP</p>
+                      <p className="text-white font-medium">
+                        {skill.experience_points} / {skill.next_level_threshold}
+                      </p>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-slate-400">Level Progress</span>
+                      <span className="text-white">
+                        {Math.round(calculateLevelProgress(skill.experience_points, skill.next_level_threshold))}%
+                      </span>
+                    </div>
+                    <Progress 
+                      value={calculateLevelProgress(skill.experience_points, skill.next_level_threshold)} 
+                      className="h-3"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div>
+                      <p className="text-lg font-bold text-white">{skill.games_played}</p>
+                      <p className="text-xs text-slate-400">Games</p>
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-white">{skill.average_score}%</p>
+                      <p className="text-xs text-slate-400">Average</p>
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-white">{skill.best_score}%</p>
+                      <p className="text-xs text-slate-400">Best</p>
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-white">{formatTimeSpent(skill.time_spent_minutes)}</p>
+                      <p className="text-xs text-slate-400">Time</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 text-sm text-slate-400">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      <span>Last: {new Date(skill.last_activity).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Zap className="h-3 w-3 text-orange-400" />
+                      <span>{skill.streak_days} day streak</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      {activeTab === 'goals' && (
+        <div className="space-y-4">
+          {goals.map((goal) => (
+            <Card key={goal.id} className="bg-slate-800 border-slate-700">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {goal.completed ? (
+                      <CheckCircle className="h-5 w-5 text-green-400" />
+                    ) : (
+                      <Circle className="h-5 w-5 text-slate-400" />
+                    )}
+                    <div>
+                      <CardTitle className={`${goal.completed ? 'text-green-400' : 'text-white'}`}>
+                        {goal.title}
+                      </CardTitle>
+                      <CardDescription>{goal.description}</CardDescription>
+                    </div>
+                  </div>
+                  {goal.deadline && (
+                    <div className="text-right">
+                      <p className="text-xs text-slate-400">Deadline</p>
+                      <p className="text-sm text-white">
+                        {new Date(goal.deadline).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-slate-400">Progress</span>
+                      <span className="text-white">
+                        {goal.current_score} / {goal.target_score}
+                      </span>
+                    </div>
+                    <Progress 
+                      value={Math.min((goal.current_score / goal.target_score) * 100, 100)} 
+                      className="h-2"
+                    />
+                  </div>
+                  
+                  {goal.target_games > 0 && (
+                    <div className="text-sm text-slate-400">
+                      Games played: {goal.current_games} / {goal.target_games}
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+
+          {isOwnProfile && (
+            <Card className="bg-slate-800 border-slate-700 border-dashed">
+              <CardContent className="text-center py-8">
+                <Target className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <p className="text-slate-400 mb-4">Set a new learning goal</p>
+                <Button>Add Goal</Button>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'analytics' && (
+        <Card className="bg-slate-800 border-slate-700">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <LineChart className="h-5 w-5" />
+              Performance Analytics
+            </CardTitle>
+            <CardDescription>
+              Detailed insights into your learning journey
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center py-8">
+            <BarChart3 className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-white mb-2">Coming Soon</h3>
+            <p className="text-slate-400">
+              Advanced analytics and insights will be available here.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}

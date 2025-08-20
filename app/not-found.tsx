@@ -1,15 +1,21 @@
-import { Seo } from '@/components/Seo'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Page Not Found | MixLab Academy',
+  description: "The page you're looking for doesn't exist.",
+}
+
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { MusicNoteIcon } from '@/components/ui/theme-icons'
 
 export default function NotFound() {
   return (
-    <>
-      <Seo
-        title="Page Not Found"
-        description="The page you&apos;re looking for doesn&apos;t exist."
-      />
-      <div className="container mx-auto px-4 py-16 text-center">
-        <div className="max-w-md mx-auto">
-          <div className="text-6xl mb-4">🎵</div>
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <div className="text-center max-w-md mx-auto">
+        <div className="mb-4 flex justify-center">
+          <MusicNoteIcon size="2xl" />
+        </div>
           <h1 className="text-4xl font-bold mb-4">404 - Not Found</h1>
           <p className="text-muted-foreground mb-8">
             Looks like this page hit a wrong note. Let&apos;s get you back on track.
@@ -30,6 +36,5 @@ export default function NotFound() {
           </div>
         </div>
       </div>
-    </>
   )
 }

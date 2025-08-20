@@ -1,0 +1,313 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
+import { Trophy, Star, Award, Target, Zap, Medal, Lock, Eye, EyeOff } from 'lucide-react';
+
+interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  category: string;
+  difficulty: 'bronze' | 'silver' | 'gold' | 'platinum';
+  points: number;
+  unlocked_at?: string;
+  is_secret: boolean;
+}
+
+interface AchievementShowcaseProps {
+  userId: string;
+  isOwnProfile?: boolean;
+  isPublic?: boolean;
+  compact?: boolean;
+}
+
+const difficultyConfig = {
+  bronze: { color: 'text-orange-600 bg-orange-100', icon: Medal },
+  silver: { color: 'text-slate-600 bg-slate-100', icon: Award },
+  gold: { color: 'text-yellow-600 bg-yellow-100', icon: Trophy },
+  platinum: { color: 'text-purple-600 bg-purple-100', icon: Star }
+};
+
+const categoryIcons = {
+  'eq_mastery': Target,
+  'games': Zap,
+  'learning': Star,
+  'community': Trophy,
+  'milestones': Award
+};
+
+export default function AchievementShowcase({
+  userId,
+  isOwnProfile = false,
+  isPublic = true,
+  compact = false
+}: AchievementShowcaseProps) {
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [userAchievements, setUserAchievements] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    fetchAchievements();
+  }, [userId]);
+
+  const fetchAchievements = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch all achievements
+      const { data: allAchievements, error: achievementsError } = await supabase
+        .from('achievements')
+        .select('*')
+        .order('category', { ascending: true })
+        .order('points', { ascending: false });
+
+      if (achievementsError) throw achievementsError;
+
+      // Fetch user's unlocked achievements
+      const { data: unlockedAchievements, error: userError } = await supabase
+        .from('user_achievements')
+        .select('achievement_id, unlocked_at')
+        .eq('user_id', userId);
+
+      if (userError) throw userError;
+
+      const unlockedSet = new Set(unlockedAchievements.map(ua => ua.achievement_id));
+      const unlockedMap = new Map(
+        unlockedAchievements.map(ua => [ua.achievement_id, ua.unlocked_at])
+      );
+
+      // Combine data
+      const achievementsWithStatus = allAchievements.map(achievement => ({
+        ...achievement,
+        unlocked_at: unlockedMap.get(achievement.id),
+      }));
+
+      // Filter based on privacy settings
+      let filteredAchievements = achievementsWithStatus;
+      if (!isOwnProfile && !isPublic) {
+        // Only show unlocked achievements for private profiles
+        filteredAchievements = achievementsWithStatus.filter(a => unlockedSet.has(a.id));
+      }
+
+      // Hide secret achievements if not unlocked and not own profile
+      if (!isOwnProfile) {
+        filteredAchievements = filteredAchievements.filter(
+          a => !a.is_secret || unlockedSet.has(a.id)
+        );
+      }
+
+      setAchievements(filteredAchievements);
+      setUserAchievements(unlockedSet);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching achievements:', error);
+      setLoading(false);
+    }
+  };
+
+  const groupedAchievements = achievements.reduce((groups, achievement) => {
+    const category = achievement.category;
+    if (!groups[category]) {
+      groups[category] = [];
+    }
+    groups[category].push(achievement);
+    return groups;
+  }, {} as Record<string, Achievement[]>);
+
+  const unlockedCount = achievements.filter(a => userAchievements.has(a.id)).length;
+  const totalPoints = achievements
+    .filter(a => userAchievements.has(a.id))
+    .reduce((sum, a) => sum + a.points, 0);
+
+  if (loading) {
+    return (
+      <Card className="bg-slate-800 border-slate-700">
+        <CardContent className="flex items-center justify-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!isPublic && !isOwnProfile) {
+    return (
+      <Card className="bg-slate-800 border-slate-700">
+        <CardContent className="flex items-center justify-center py-8">
+          <div className="text-center">
+            <EyeOff className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+            <p className="text-slate-400">Achievements are private</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (compact) {
+    // Compact view for profile cards
+    const recentAchievements = achievements
+      .filter(a => userAchievements.has(a.id))
+      .sort((a, b) => new Date(b.unlocked_at!).getTime() - new Date(a.unlocked_at!).getTime())
+      .slice(0, 3);
+
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Trophy className="h-4 w-4 text-yellow-500" />
+            <span className="text-sm font-medium text-white">
+              {unlockedCount} achievements
+            </span>
+          </div>
+          <span className="text-xs text-slate-400">{totalPoints} points</span>
+        </div>
+        
+        {recentAchievements.length > 0 && (
+          <div className="flex gap-1">
+            {recentAchievements.map((achievement) => {
+              const DifficultyIcon = difficultyConfig[achievement.difficulty].icon;
+              return (
+                <div
+                  key={achievement.id}
+                  className={`p-1 rounded ${difficultyConfig[achievement.difficulty].color}`}
+                  title={achievement.title}
+                >
+                  <DifficultyIcon className="h-3 w-3" />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <Card className="bg-slate-800 border-slate-700">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Trophy className="h-5 w-5 text-yellow-500" />
+            <div>
+              <CardTitle className="text-white">Achievements</CardTitle>
+              <CardDescription>
+                {unlockedCount} of {achievements.length} unlocked • {totalPoints} points
+              </CardDescription>
+            </div>
+          </div>
+          {!isPublic && (
+            <div className="flex items-center gap-1 text-xs text-slate-400">
+              <EyeOff className="h-3 w-3" />
+              <span>Private</span>
+            </div>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {Object.entries(groupedAchievements).map(([category, categoryAchievements]) => {
+          const CategoryIcon = categoryIcons[category as keyof typeof categoryIcons] || Award;
+          const displayAchievements = showAll ? categoryAchievements : categoryAchievements.slice(0, 6);
+          
+          return (
+            <div key={category} className="space-y-3">
+              <div className="flex items-center gap-2">
+                <CategoryIcon className="h-4 w-4 text-primary" />
+                <h4 className="font-medium text-white capitalize">
+                  {category.replace('_', ' ')}
+                </h4>
+                <span className="text-xs text-slate-400">
+                  {categoryAchievements.filter(a => userAchievements.has(a.id)).length} / {categoryAchievements.length}
+                </span>
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {displayAchievements.map((achievement) => {
+                  const isUnlocked = userAchievements.has(achievement.id);
+                  const DifficultyIcon = difficultyConfig[achievement.difficulty].icon;
+                  
+                  return (
+                    <div
+                      key={achievement.id}
+                      className={`p-3 rounded-lg border transition-all ${
+                        isUnlocked
+                          ? 'bg-slate-700 border-slate-600 hover:border-primary/50'
+                          : 'bg-slate-900 border-slate-800 opacity-60'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className={`p-1 rounded ${
+                          isUnlocked 
+                            ? difficultyConfig[achievement.difficulty].color
+                            : 'bg-slate-800 text-slate-600'
+                        }`}>
+                          {isUnlocked ? (
+                            <DifficultyIcon className="h-4 w-4" />
+                          ) : achievement.is_secret && !isOwnProfile ? (
+                            <Lock className="h-4 w-4" />
+                          ) : (
+                            <DifficultyIcon className="h-4 w-4" />
+                          )}
+                        </div>
+                        <span className="text-xs text-slate-400">{achievement.points}pts</span>
+                      </div>
+                      
+                      <h5 className={`font-medium text-sm mb-1 ${
+                        isUnlocked ? 'text-white' : 'text-slate-500'
+                      }`}>
+                        {achievement.is_secret && !isUnlocked && !isOwnProfile
+                          ? 'Secret Achievement'
+                          : achievement.title
+                        }
+                      </h5>
+                      
+                      <p className={`text-xs ${
+                        isUnlocked ? 'text-slate-300' : 'text-slate-600'
+                      }`}>
+                        {achievement.is_secret && !isUnlocked && !isOwnProfile
+                          ? 'Complete certain actions to unlock'
+                          : achievement.description
+                        }
+                      </p>
+                      
+                      {isUnlocked && achievement.unlocked_at && (
+                        <p className="text-xs text-primary mt-2">
+                          Unlocked {new Date(achievement.unlocked_at).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {!showAll && categoryAchievements.length > 6 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowAll(true)}
+                  className="text-slate-400 hover:text-white"
+                >
+                  Show {categoryAchievements.length - 6} more
+                </Button>
+              )}
+            </div>
+          );
+        })}
+        
+        {showAll && achievements.length > 18 && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowAll(false)}
+            className="text-slate-400 hover:text-white w-full"
+          >
+            Show Less
+          </Button>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
