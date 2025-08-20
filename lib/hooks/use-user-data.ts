@@ -3,7 +3,39 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useUserStore } from '@/lib/stores/user-store';
 import type { Database } from '@/lib/types';
-import type { GameSession, SkillAssessment, ProfileUpdate } from '@/lib/auth/schemas';
+
+// Type definitions
+interface GameSession {
+  game_type: string;
+  score: number;
+  max_score?: number;
+  time_spent_seconds?: number;
+  difficulty_level?: 'easy' | 'normal' | 'hard' | 'expert';
+  game_data?: Record<string, any>;
+}
+
+interface SkillAssessment {
+  eq_knowledge_score?: number;
+  compression_knowledge_score?: number;
+  mixing_knowledge_score?: number;
+  mastering_knowledge_score?: number;
+  overall_level?: 'beginner' | 'intermediate' | 'advanced';
+  recommended_path?: string[];
+}
+
+interface ProfileUpdate {
+  username?: string;
+  full_name?: string;
+  bio?: string;
+  location?: string;
+  website_url?: string;
+  experience_level?: 'beginner' | 'intermediate' | 'advanced';
+  learning_goals?: string[];
+  is_public?: boolean;
+  email_notifications?: boolean;
+  progress_public?: boolean;
+  achievements_public?: boolean;
+}
 
 // Profile hooks
 export function useProfile() {
