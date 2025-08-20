@@ -40,6 +40,10 @@ test.describe('Accessibility Audits', () => {
     await skipLink.focus()
     await expect(skipLink).toBeVisible()
     
+    // Blur the skip link and verify it becomes hidden again
+    await page.keyboard.press('Tab') // Tab away to blur the skip link
+    await expect(skipLink).toBeHidden()
+    
     // Check for main landmark
     const main = page.locator('main, [role="main"], #main-content')
     await expect(main).toBeVisible()

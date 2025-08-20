@@ -51,10 +51,7 @@ export async function runLighthouseA11yAudit(
         ],
       },
     },
-    thresholds: {
-      accessibility: 95,
-      // Don't enforce performance thresholds since we're only testing accessibility
-    },
+    // No thresholds here - we handle assertions in individual tests
   })
 
   const a11yScore = Math.round((lighthouseResult.lhr.categories.accessibility?.score || 0) * 100)
