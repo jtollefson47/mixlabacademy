@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/supabase';
 import { Search, Users, Trophy, TrendingUp, MapPin, Globe, User, Filter, Star } from 'lucide-react';
-import { useAuth } from '@/lib/auth/AuthProvider';
 
 interface CommunityProfile {
   id: string;

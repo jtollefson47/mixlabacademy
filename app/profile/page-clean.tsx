@@ -113,7 +113,7 @@ export default function ProfilePage() {
         {/* Profile Content */}
         <div className="space-y-6">
           {/* Basic Information */}
-          <Card className="bg-card/80 backdrop-blur border-border/20">
+          <Card className="bg-card border-border/20">
             <CardHeader>
               <CardTitle className="text-foreground">Basic Information</CardTitle>
             </CardHeader>
@@ -170,7 +170,7 @@ export default function ProfilePage() {
 
           {/* Learning Goals */}
           {profile.learning_goals && profile.learning_goals.length > 0 && (
-            <Card className="bg-card/80 backdrop-blur border-border/20">
+            <Card className="bg-card border-border/20">
               <CardHeader>
                 <CardTitle className="text-foreground">Learning Goals</CardTitle>
               </CardHeader>
@@ -190,7 +190,7 @@ export default function ProfilePage() {
           )}
 
           {/* Privacy Settings Status */}
-          <Card className="bg-card/80 backdrop-blur border-border/20">
+          <Card className="bg-card border-border/20">
             <CardHeader>
               <CardTitle className="text-foreground">Privacy Settings</CardTitle>
             </CardHeader>

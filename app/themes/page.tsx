@@ -114,7 +114,7 @@ export default function ThemesPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 p-4 bg-gradient-to-br from-cyan-200 via-yellow-100 to-pink-200 rounded-lg">
+                <div className="space-y-4 p-4 bg-card border rounded-lg">
                   <div className="bg-white p-4 rounded shadow">
                     <h3 className="font-semibold text-gray-900 mb-2">Sample Card</h3>
                     <p className="text-gray-700 text-sm mb-3">
@@ -154,7 +154,7 @@ export default function ThemesPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-lg">
+                <div className="space-y-4 p-4 bg-card border rounded-lg">
                   <div className="bg-blue-900 p-4 rounded shadow">
                     <h3 className="font-semibold text-yellow-100 mb-2">Sample Card</h3>
                     <p className="text-yellow-50/80 text-sm mb-3">

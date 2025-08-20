@@ -166,7 +166,7 @@ export default function LeaderboardsPage() {
             </Card>
 
             {/* Call to Action */}
-            <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <Card className="bg-card border-primary/20">
               <CardHeader>
                 <CardTitle className="text-white">Join the Competition!</CardTitle>
                 <CardDescription>

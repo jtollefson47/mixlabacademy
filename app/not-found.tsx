@@ -5,8 +5,6 @@ export const metadata: Metadata = {
   description: "The page you're looking for doesn't exist.",
 }
 
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { MusicNoteIcon } from '@/components/ui/theme-icons'
 
 export default function NotFound() {

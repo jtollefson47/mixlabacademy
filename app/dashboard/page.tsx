@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Trophy, Clock, Target, Zap, Users, Star, TrendingUp, User } from 'lucide-react'
+import { Trophy, Clock, Target, Zap, Users, User } from 'lucide-react'
 import { useAuth } from '@/lib/auth/AuthProvider'
 import { supabase } from '@/lib/supabase'
 
