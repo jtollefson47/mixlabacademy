@@ -234,8 +234,3 @@ export default function ThemesPage() {
     </AdminOnly>
   )
 }
-
-export const metadata = {
-  title: 'Theme Management | Audio Learning Platform',
-  description: 'Administrator theme management and customization controls',
-}

@@ -182,7 +182,7 @@ function GameCard({ game }: { game: GameConfig }) {
             </span>
           </div>
           {isAvailable && game.route ? (
-            <Button asChild className="w-full btn-glow text-white">
+            <Button asChild className="w-full btn-glow">
               <Link href={game.route as any}>Play Now</Link>
             </Button>
           ) : (

@@ -47,7 +47,7 @@ export default function LeaderboardsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">

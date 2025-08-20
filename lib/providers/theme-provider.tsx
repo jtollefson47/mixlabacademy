@@ -34,20 +34,20 @@ export function ThemeProvider({ children, defaultMode = 'system' }: ThemeProvide
     light: {
       primary: 'hsl(195, 100%, 45%)', // Retro blue
       primaryForeground: 'hsl(0, 0%, 100%)', // White text on blue
-      secondary: 'hsl(50, 100%, 85%)', // Light cream
-      secondaryForeground: 'hsl(0, 0%, 10%)', // Dark text on light
+      secondary: 'hsl(50, 100%, 85%)', // Light cream for accents only
+      secondaryForeground: 'hsl(0, 0%, 10%)', // Dark text on cream
       accent: 'hsl(345, 100%, 55%)', // Retro pink
       accentForeground: 'hsl(0, 0%, 100%)', // White text on pink
-      background: 'hsl(48, 100%, 97%)', // Very light cream
+      background: 'hsl(0, 0%, 100%)', // Pure white background
       foreground: 'hsl(0, 0%, 15%)', // Dark text
       card: 'hsl(0, 0%, 100%)', // White cards
       cardForeground: 'hsl(0, 0%, 15%)', // Dark text
       popover: 'hsl(0, 0%, 100%)',
       popoverForeground: 'hsl(0, 0%, 15%)',
-      muted: 'hsl(50, 30%, 94%)', // Very light beige
+      muted: 'hsl(210, 40%, 96%)', // Very light gray for muted areas
       mutedForeground: 'hsl(0, 0%, 40%)', // Medium gray text
-      border: 'hsl(50, 30%, 85%)', // Light beige border
-      input: 'hsl(50, 30%, 90%)', // Light input background
+      border: 'hsl(214, 31%, 91%)', // Light gray border
+      input: 'hsl(214, 31%, 91%)', // Light input background
       ring: 'hsl(195, 100%, 45%)', // Focus ring matches primary
     },
     dark: {
@@ -81,15 +81,13 @@ export function ThemeProvider({ children, defaultMode = 'system' }: ThemeProvide
       root.style.setProperty(cssVar, value.replace('hsl(', '').replace(')', ''))
     })
 
-    // Apply background gradient for retro theme
+    // Ensure body uses theme background color (remove any gradients)
     const body = document.body
     if (body) {
+      // Remove any existing gradient classes and ensure bg-background is applied
       body.className = body.className.replace(/bg-gradient-[^\s]*|bg-[^\s]*/g, '').trim()
-      
-      if (theme === 'light') {
-        body.className += ' bg-gradient-to-br from-cyan-200 via-yellow-100 to-pink-200'
-      } else {
-        body.className += ' bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900'
+      if (!body.className.includes('bg-background')) {
+        body.className += ' bg-background'
       }
     }
 
@@ -120,6 +118,7 @@ export function ThemeProvider({ children, defaultMode = 'system' }: ThemeProvide
     setModeState(modeToUse)
     
     const themeToApply = modeToUse === 'system' ? getSystemTheme() : modeToUse
+    setResolvedTheme(themeToApply)
     applyTheme(themeToApply)
     setIsLoading(false)
   }, [defaultMode])

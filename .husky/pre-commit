@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Pre-commit hook to enforce style guide compliance
+
+echo "🎨 Checking style guide compliance..."
+
+# Check for gradient backgrounds in staged files
+if git diff --cached --name-only | xargs grep -l "bg-gradient" 2>/dev/null; then
+  echo "❌ ERROR: Gradient backgrounds found in staged files!"
+  echo "   Gradient backgrounds are forbidden. Use solid theme backgrounds instead."
+  echo "   See docs/STYLE_GUIDE.md for guidance."
+  echo ""
+  echo "   Found in:"
+  git diff --cached --name-only | xargs grep -l "bg-gradient" 2>/dev/null
+  echo ""
+  exit 1
+fi
+
+# Check for backdrop-blur in staged files
+if git diff --cached --name-only | xargs grep -l "backdrop-blur" 2>/dev/null; then
+  echo "❌ ERROR: Backdrop blur found in staged files!"
+  echo "   Backdrop blur is forbidden. Use solid card backgrounds instead."
+  echo "   See docs/STYLE_GUIDE.md for guidance."
+  echo ""
+  echo "   Found in:"
+  git diff --cached --name-only | xargs grep -l "backdrop-blur" 2>/dev/null
+  echo ""
+  exit 1
+fi
+
+# Check for semi-transparent cards
+if git diff --cached --name-only | xargs grep -l "bg-card/[0-9]" 2>/dev/null; then
+  echo "❌ ERROR: Semi-transparent cards found in staged files!"
+  echo "   Use solid card backgrounds (bg-card) instead of semi-transparent ones."
+  echo "   See docs/STYLE_GUIDE.md for guidance."
+  echo ""
+  echo "   Found in:"
+  git diff --cached --name-only | xargs grep -l "bg-card/[0-9]" 2>/dev/null
+  echo ""
+  exit 1
+fi
+
+# Run linting
+echo "🔍 Running ESLint..."
+npm run lint --silent
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint failed. Please fix the errors above."
+  exit 1
+fi
+
+# Run type checking
+echo "🔍 Running TypeScript check..."
+npm run typecheck --silent
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript check failed. Please fix the errors above."
+  exit 1
+fi
+
+echo "✅ Style guide compliance check passed!"
+exit 0

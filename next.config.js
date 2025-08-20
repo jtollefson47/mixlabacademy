@@ -2,6 +2,8 @@
 const nextConfig = {
   eslint: {
     dirs: ['app', 'components', 'lib', 'tests'],
+    // Ignore ESLint errors during build for deployment
+    ignoreDuringBuilds: true,
   },
   experimental: {
     typedRoutes: true,

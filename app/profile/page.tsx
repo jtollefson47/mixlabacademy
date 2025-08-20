@@ -52,17 +52,36 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      router.push('/auth/signin');
-      return;
-    }
     fetchProfile();
-  }, [user, router]);
+  }, [user]);
 
   const fetchProfile = async () => {
     if (!user) return;
 
     try {
+      // If using mock user, create mock profile data
+      if (user.id === 'mock-user-id') {
+        const mockProfile: UserProfile = {
+          id: 'mock-user-id',
+          username: 'testuser',
+          email: 'test@example.com',
+          full_name: 'Test User',
+          bio: 'Testing the audio learning platform',
+          location: 'Test City',
+          website_url: null,
+          experience_level: 'intermediate',
+          learning_goals: ['eq_mastery', 'mixing_fundamentals'],
+          is_public: true,
+          email_notifications: true,
+          progress_public: true,
+          achievements_public: true,
+          created_at: new Date().toISOString()
+        };
+        setProfile(mockProfile);
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -116,7 +135,7 @@ export default function ProfilePage() {
         {/* Profile Content */}
         <div className="space-y-6">
           {/* Basic Information */}
-          <Card className="bg-card/80 backdrop-blur border-border/20">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">Basic Information</CardTitle>
             </CardHeader>
@@ -173,7 +192,7 @@ export default function ProfilePage() {
 
           {/* Learning Goals */}
           {profile.learning_goals && profile.learning_goals.length > 0 && (
-            <Card className="bg-card/80 backdrop-blur border-border/20">
+            <Card className="bg-card border-border">
               <CardHeader>
                 <CardTitle className="text-foreground">Learning Goals</CardTitle>
               </CardHeader>
@@ -193,7 +212,7 @@ export default function ProfilePage() {
           )}
 
           {/* Theme Settings */}
-          <Card className="bg-card/80 backdrop-blur border-border/20">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground flex items-center gap-2">
                 <Palette className="h-5 w-5" />
@@ -241,7 +260,7 @@ export default function ProfilePage() {
 
           {/* Admin Only Theme Management */}
           <AdminOnly>
-            <Card className="bg-card/80 backdrop-blur border-border/20 border-accent/20">
+            <Card className="bg-card border-border border-accent/20">
               <CardHeader>
                 <CardTitle className="text-foreground flex items-center gap-2">
                   <Palette className="h-5 w-5 text-accent" />
@@ -273,7 +292,7 @@ export default function ProfilePage() {
           </AdminOnly>
 
           {/* Privacy Settings Status */}
-          <Card className="bg-card/80 backdrop-blur border-border/20">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">Privacy Settings</CardTitle>
             </CardHeader>
@@ -309,7 +328,7 @@ export default function ProfilePage() {
           </Card>
 
           {/* Profile Stats */}
-          <Card className="bg-card/80 backdrop-blur border-border/20">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-foreground">Profile Information</CardTitle>
             </CardHeader>

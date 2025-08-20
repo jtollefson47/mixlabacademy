@@ -13,7 +13,9 @@
     "test:e2e": "playwright test",
     "test:a11y": "playwright test tests/e2e/accessibility.spec.ts --project=chromium",
     "e2e:install": "playwright install",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate:page": "node scripts/generate-page.js",
+    "style:check": "npm run lint && npm run typecheck"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

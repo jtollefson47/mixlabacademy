@@ -78,6 +78,75 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <head>
+        {/* Theme script to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const savedMode = localStorage.getItem('theme-mode') || 'system';
+                const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                const resolvedTheme = savedMode === 'system' ? getSystemTheme() : savedMode;
+                
+                const retroTheme = {
+                  light: {
+                    primary: '195, 100%, 45%',
+                    primaryForeground: '0, 0%, 100%',
+                    secondary: '50, 100%, 85%',
+                    secondaryForeground: '0, 0%, 10%',
+                    accent: '345, 100%, 55%',
+                    accentForeground: '0, 0%, 100%',
+                    background: '0, 0%, 100%',
+                    foreground: '0, 0%, 15%',
+                    card: '0, 0%, 100%',
+                    cardForeground: '0, 0%, 15%',
+                    popover: '0, 0%, 100%',
+                    popoverForeground: '0, 0%, 15%',
+                    muted: '210, 40%, 96%',
+                    mutedForeground: '0, 0%, 40%',
+                    border: '214, 31%, 91%',
+                    input: '214, 31%, 91%',
+                    ring: '195, 100%, 45%',
+                    destructive: '0, 84%, 60%',
+                    destructiveForeground: '0, 0%, 100%',
+                  },
+                  dark: {
+                    primary: '195, 100%, 45%',
+                    primaryForeground: '0, 0%, 100%',
+                    secondary: '50, 100%, 85%',
+                    secondaryForeground: '0, 0%, 10%',
+                    accent: '345, 100%, 55%',
+                    accentForeground: '0, 0%, 100%',
+                    background: '220, 40%, 8%',
+                    foreground: '50, 30%, 90%',
+                    card: '220, 35%, 12%',
+                    cardForeground: '50, 30%, 90%',
+                    popover: '220, 35%, 12%',
+                    popoverForeground: '50, 30%, 90%',
+                    muted: '220, 30%, 18%',
+                    mutedForeground: '50, 15%, 65%',
+                    border: '220, 30%, 20%',
+                    input: '220, 30%, 15%',
+                    ring: '195, 100%, 45%',
+                    destructive: '0, 84%, 60%',
+                    destructiveForeground: '0, 0%, 100%',
+                  }
+                };
+                
+                const theme = retroTheme[resolvedTheme];
+                const root = document.documentElement;
+                
+                Object.entries(theme).forEach(([key, value]) => {
+                  const cssVar = '--' + key.replace(/([A-Z])/g, '-$1').toLowerCase();
+                  root.style.setProperty(cssVar, value);
+                });
+                
+                // Apply theme class
+                root.className = root.className.replace(/theme-(light|dark)/g, '').trim();
+                root.className += ' theme-' + resolvedTheme;
+              })();
+            `,
+          }}
+        />
         {/* Performance and caching hints */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

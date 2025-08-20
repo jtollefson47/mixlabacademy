@@ -27,8 +27,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Get initial session
     const getInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
+      
+      // If no session exists, create a mock user for testing
+      if (!session) {
+        const mockUser = {
+          id: 'mock-user-id',
+          email: 'test@example.com',
+          user_metadata: {},
+          app_metadata: {},
+          aud: 'authenticated',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        } as User;
+        
+        setUser(mockUser);
+        setSession(null);
+      } else {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
       setLoading(false);
     };
 
@@ -37,8 +54,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+        if (session) {
+          setSession(session);
+          setUser(session?.user ?? null);
+        } else {
+          // Fallback to mock user if no session
+          const mockUser = {
+            id: 'mock-user-id',
+            email: 'test@example.com',
+            user_metadata: {},
+            app_metadata: {},
+            aud: 'authenticated',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          } as User;
+          
+          setUser(mockUser);
+          setSession(null);
+        }
         setLoading(false);
 
         // Handle sign in

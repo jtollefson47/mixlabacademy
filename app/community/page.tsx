@@ -132,12 +132,12 @@ export default function CommunityPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+    <div className="min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <Users className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold text-white">Community</h1>
+          <h1 className="text-3xl font-bold text-foreground">Community</h1>
         </div>
 
         {/* View Selector */}
@@ -176,9 +176,9 @@ export default function CommunityPage() {
 
         {/* Search and Filters */}
         {view === 'search' && (
-          <Card className="bg-slate-800 border-slate-700 mb-6">
+          <Card className="bg-card border-border mb-6">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-foreground flex items-center gap-2">
                 <Filter className="h-5 w-5" />
                 Search & Filter
               </CardTitle>
@@ -186,18 +186,18 @@ export default function CommunityPage() {
             <CardContent className="space-y-4">
               {/* Search Input */}
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search by username, name, bio, or location..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-slate-700 border-slate-600 text-white"
+                  className="pl-10 bg-input border-border text-foreground"
                 />
               </div>
 
               {/* Experience Level Filter */}
               <div>
-                <p className="text-sm text-slate-400 mb-2">Experience Level</p>
+                <p className="text-sm text-muted-foreground mb-2">Experience Level</p>
                 <div className="flex gap-2">
                   <Button
                     size="sm"
@@ -221,7 +221,7 @@ export default function CommunityPage() {
 
               {/* Learning Goals Filter */}
               <div>
-                <p className="text-sm text-slate-400 mb-2">Learning Goals</p>
+                <p className="text-sm text-muted-foreground mb-2">Learning Goals</p>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(learningGoalsLabels).map(([goal, label]) => (
                     <Button
@@ -247,11 +247,11 @@ export default function CommunityPage() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredProfiles.map((profile) => (
-              <Card key={profile.id} className="bg-slate-800 border-slate-700 hover:border-primary/50 transition-colors">
+              <Card key={profile.id} className="bg-card border-border hover:border-primary/50 transition-colors">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-white text-lg">
+                      <CardTitle className="text-foreground text-lg">
                         <Link 
                           href={`/profile/${profile.username}`}
                           className="hover:text-primary transition-colors"
@@ -259,7 +259,7 @@ export default function CommunityPage() {
                           {profile.full_name || profile.username}
                         </Link>
                       </CardTitle>
-                      <CardDescription className="text-slate-400">
+                      <CardDescription className="text-muted-foreground">
                         @{profile.username}
                       </CardDescription>
                     </div>
@@ -277,13 +277,13 @@ export default function CommunityPage() {
                 <CardContent className="space-y-3">
                   {/* Bio */}
                   {profile.bio && (
-                    <p className="text-slate-300 text-sm line-clamp-2">
+                    <p className="text-muted-foreground text-sm line-clamp-2">
                       {profile.bio}
                     </p>
                   )}
 
                   {/* Location and Website */}
-                  <div className="flex items-center gap-4 text-sm text-slate-400">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     {profile.location && (
                       <div className="flex items-center gap-1">
                         <MapPin className="h-3 w-3" />
@@ -300,16 +300,16 @@ export default function CommunityPage() {
 
                   {/* Stats */}
                   <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-4 text-slate-400">
+                    <div className="flex items-center gap-4 text-muted-foreground">
                       <span>{profile.game_count} games</span>
                       {view === 'leaderboard' && profile.best_score && (
-                        <div className="flex items-center gap-1 text-yellow-400">
+                        <div className="flex items-center gap-1 text-primary">
                           <Star className="h-3 w-3" />
                           <span>{profile.best_score}% best</span>
                         </div>
                       )}
                     </div>
-                    <span className="text-slate-500">
+                    <span className="text-muted-foreground/70">
                       {view === 'recent' ? 'Joined ' : 'Member since '}
                       {new Date(profile.created_at).toLocaleDateString()}
                     </span>
@@ -321,13 +321,13 @@ export default function CommunityPage() {
                       {profile.learning_goals.slice(0, 3).map((goal) => (
                         <span
                           key={goal}
-                          className="inline-block px-2 py-1 bg-slate-700 text-slate-300 rounded text-xs"
+                          className="inline-block px-2 py-1 bg-muted text-muted-foreground rounded text-xs"
                         >
                           {learningGoalsLabels[goal] || goal}
                         </span>
                       ))}
                       {profile.learning_goals.length > 3 && (
-                        <span className="inline-block px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">
+                        <span className="inline-block px-2 py-1 bg-muted text-muted-foreground/70 rounded text-xs">
                           +{profile.learning_goals.length - 3} more
                         </span>
                       )}
@@ -340,11 +340,11 @@ export default function CommunityPage() {
         )}
 
         {filteredProfiles.length === 0 && !loading && (
-          <Card className="bg-slate-800 border-slate-700">
+          <Card className="bg-card border-border">
             <CardContent className="text-center py-12">
-              <User className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">No profiles found</h3>
-              <p className="text-slate-400">
+              <User className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">No profiles found</h3>
+              <p className="text-muted-foreground">
                 Try adjusting your search criteria or filters.
               </p>
             </CardContent>

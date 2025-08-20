@@ -48,6 +48,37 @@ export default function Dashboard() {
     if (!user) return
 
     try {
+      // If using mock user, create mock dashboard data
+      if (user.id === 'mock-user-id') {
+        setStats({
+          totalGames: 12,
+          averageScore: 85,
+          bestScore: 95,
+          timePlayedHours: 2.5,
+          currentStreak: 5,
+          weeklyGrowth: 3
+        });
+
+        const mockRecentGames: RecentGame[] = [
+          {
+            id: '1',
+            game_type: 'eq_match',
+            score: 95,
+            completed_at: new Date().toISOString()
+          },
+          {
+            id: '2',
+            game_type: 'compression',
+            score: 82,
+            completed_at: new Date(Date.now() - 86400000).toISOString()
+          }
+        ];
+
+        setRecentGames(mockRecentGames);
+        setLoading(false);
+        return;
+      }
+
       // Fetch game sessions
       const { data: gameSessions, error: gamesError } = await supabase
         .from('game_sessions')
@@ -107,20 +138,23 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
-        <p className="text-muted-foreground">Track your audio engineering learning progress</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
+          <p className="text-muted-foreground">Track your audio engineering learning progress</p>
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {/* Stats Cards */}
@@ -319,6 +353,7 @@ export default function Dashboard() {
             </Link>
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   )

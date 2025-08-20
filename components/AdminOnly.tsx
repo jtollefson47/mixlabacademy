@@ -26,7 +26,7 @@ export function AdminOnly({ children, fallback = null }: AdminOnlyProps) {
         // Check if user has admin role in profiles table
         const { data: profile, error } = await supabase
           .from('profiles')
-          .select('role')
+          .select('*')
           .eq('id', user.id)
           .single()
 
@@ -34,7 +34,8 @@ export function AdminOnly({ children, fallback = null }: AdminOnlyProps) {
           console.error('Error checking admin status:', error)
           setIsAdmin(false)
         } else {
-          setIsAdmin(profile?.role === 'admin')
+          // Check if role property exists and equals 'admin'
+          setIsAdmin(profile && 'role' in profile && profile.role === 'admin')
         }
       } catch (error) {
         console.error('Admin check failed:', error)
@@ -77,18 +78,19 @@ export function useIsAdmin() {
           return
         }
 
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
+        // Get admin status by checking role
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
 
-        if (error) {
-          console.error('Error checking admin status:', error)
-          setIsAdmin(false)
-        } else {
-          setIsAdmin(profile?.role === 'admin')
-        }
+    if (error) {
+      console.error('Error fetching profile:', error)
+      return false
+    }
+
+    return profile && 'role' in profile && profile.role === 'admin'
       } catch (error) {
         console.error('Admin check failed:', error)
         setIsAdmin(false)

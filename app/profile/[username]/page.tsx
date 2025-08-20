@@ -83,7 +83,7 @@ export default function PublicProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
@@ -91,12 +91,12 @@ export default function PublicProfilePage() {
 
   if (notFound || !profile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <Card className="bg-slate-800 border-slate-700 w-full max-w-md">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="bg-card border-border w-full max-w-md">
           <CardContent className="text-center py-8">
-            <EyeOff className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-white mb-2">Profile Not Found</h2>
-            <p className="text-slate-300">
+            <EyeOff className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-foreground mb-2">Profile Not Found</h2>
+            <p className="text-muted-foreground">
               This profile doesn't exist or is set to private.
             </p>
           </CardContent>
@@ -106,15 +106,15 @@ export default function PublicProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <User className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold text-white">{profile.username}'s Profile</h1>
+            <h1 className="text-3xl font-bold text-foreground">{profile.username}'s Profile</h1>
             <div className="flex items-center gap-1">
-              <Eye className="h-5 w-5 text-green-400" />
-              <span className="text-sm text-green-400">Public</span>
+              <Eye className="h-5 w-5 text-green-500" />
+              <span className="text-sm text-green-500">Public</span>
             </div>
           </div>
           {/* Follow functionality coming soon */}
