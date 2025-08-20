@@ -51,23 +51,23 @@ export function ThemeProvider({ children, defaultMode = 'system' }: ThemeProvide
       ring: 'hsl(195, 100%, 45%)', // Focus ring matches primary
     },
     dark: {
-      primary: 'hsl(195, 85%, 65%)', // Brighter blue for dark mode
-      primaryForeground: 'hsl(0, 0%, 10%)', // Dark text on bright blue
-      secondary: 'hsl(50, 40%, 25%)', // Dark warm brown
-      secondaryForeground: 'hsl(50, 100%, 85%)', // Light cream text
-      accent: 'hsl(345, 80%, 70%)', // Brighter pink for dark mode
-      accentForeground: 'hsl(0, 0%, 10%)', // Dark text on bright pink
-      background: 'hsl(30, 20%, 8%)', // Very dark brown
+      primary: 'hsl(195, 100%, 45%)', // Keep same blue as light mode
+      primaryForeground: 'hsl(0, 0%, 100%)', // White text on blue
+      secondary: 'hsl(50, 100%, 85%)', // Light cream like light mode
+      secondaryForeground: 'hsl(0, 0%, 10%)', // Dark text on light cream
+      accent: 'hsl(345, 100%, 55%)', // Keep same pink as light mode
+      accentForeground: 'hsl(0, 0%, 100%)', // White text on pink
+      background: 'hsl(220, 40%, 8%)', // Dark blue background
       foreground: 'hsl(50, 30%, 90%)', // Light cream text
-      card: 'hsl(30, 25%, 12%)', // Dark brown cards
+      card: 'hsl(220, 35%, 12%)', // Dark blue cards
       cardForeground: 'hsl(50, 30%, 90%)', // Light text
-      popover: 'hsl(30, 25%, 12%)',
+      popover: 'hsl(220, 35%, 12%)',
       popoverForeground: 'hsl(50, 30%, 90%)',
-      muted: 'hsl(30, 20%, 18%)', // Slightly lighter brown
+      muted: 'hsl(220, 30%, 18%)', // Slightly lighter dark blue
       mutedForeground: 'hsl(50, 15%, 65%)', // Medium light text
-      border: 'hsl(30, 25%, 20%)', // Brown border
-      input: 'hsl(30, 25%, 15%)', // Dark input background
-      ring: 'hsl(195, 85%, 65%)', // Focus ring matches primary
+      border: 'hsl(220, 30%, 20%)', // Dark blue border
+      input: 'hsl(220, 30%, 15%)', // Dark blue input background
+      ring: 'hsl(195, 100%, 45%)', // Focus ring matches primary
     }
   }
 
@@ -89,7 +89,7 @@ export function ThemeProvider({ children, defaultMode = 'system' }: ThemeProvide
       if (theme === 'light') {
         body.className += ' bg-gradient-to-br from-cyan-200 via-yellow-100 to-pink-200'
       } else {
-        body.className += ' bg-gradient-to-br from-amber-950/30 via-stone-900 to-pink-950/30'
+        body.className += ' bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900'
       }
     }
 

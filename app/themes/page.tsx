@@ -154,20 +154,20 @@ export default function ThemesPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4 p-4 bg-gradient-to-br from-amber-950/30 via-stone-900 to-pink-950/30 rounded-lg">
-                  <div className="bg-stone-800 p-4 rounded shadow">
+                <div className="space-y-4 p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-lg">
+                  <div className="bg-blue-900 p-4 rounded shadow">
                     <h3 className="font-semibold text-yellow-100 mb-2">Sample Card</h3>
                     <p className="text-yellow-50/80 text-sm mb-3">
-                      This is how content appears in dark mode with improved contrast.
+                      This is how content appears in dark mode with dark blue theme.
                     </p>
                     <div className="flex gap-2">
-                      <button className="px-3 py-1 bg-cyan-400 text-gray-900 rounded text-sm">
+                      <button className="px-3 py-1 bg-cyan-500 text-white rounded text-sm">
                         Primary
                       </button>
-                      <button className="px-3 py-1 bg-amber-700 text-yellow-100 rounded text-sm">
+                      <button className="px-3 py-1 bg-yellow-200 text-gray-900 rounded text-sm">
                         Secondary
                       </button>
-                      <button className="px-3 py-1 bg-pink-400 text-gray-900 rounded text-sm">
+                      <button className="px-3 py-1 bg-pink-500 text-white rounded text-sm">
                         Accent
                       </button>
                     </div>
@@ -212,16 +212,16 @@ export default function ThemesPage() {
                     <h4 className="font-semibold mb-2">Dark Mode Colors</h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded bg-cyan-400"></div>
-                        <span>Primary: Bright Blue (hsl(195, 85%, 65%))</span>
+                        <div className="w-4 h-4 rounded bg-cyan-500"></div>
+                        <span>Primary: Retro Blue (hsl(195, 100%, 45%))</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded bg-amber-700"></div>
-                        <span>Secondary: Dark Warm (hsl(50, 40%, 25%))</span>
+                        <div className="w-4 h-4 rounded bg-yellow-200 border"></div>
+                        <span>Secondary: Light Cream (hsl(50, 100%, 85%))</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded bg-pink-400"></div>
-                        <span>Accent: Bright Pink (hsl(345, 80%, 70%))</span>
+                        <div className="w-4 h-4 rounded bg-pink-500"></div>
+                        <span>Accent: Retro Pink (hsl(345, 100%, 55%))</span>
                       </div>
                     </div>
                   </div>
