@@ -82,6 +82,8 @@ jobs:
       run: pnpm run test:e2e --project=chromium
       env:
         CI: true
+        NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDU5MzI3OTMsImV4cCI6MTk2MTUwODc5M30.placeholder
 
     - name: Upload Playwright Report
       uses: actions/upload-artifact@v4
