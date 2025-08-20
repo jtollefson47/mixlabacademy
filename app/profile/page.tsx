@@ -4,9 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { User, MapPin, Globe, Calendar } from 'lucide-react';
+import { useTheme } from '@/lib/providers/theme-provider';
+import { AdminOnly } from '@/components/AdminOnly';
+import { User, MapPin, Globe, Calendar, Palette } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -42,6 +46,7 @@ const learningGoalsLabels: Record<string, string> = {
 
 export default function ProfilePage() {
   const { user } = useAuth();
+  const { mode, setMode, resolvedTheme } = useTheme();
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -186,6 +191,86 @@ export default function ProfilePage() {
               </CardContent>
             </Card>
           )}
+
+          {/* Theme Settings */}
+          <Card className="bg-card/80 backdrop-blur border-border/20">
+            <CardHeader>
+              <CardTitle className="text-foreground flex items-center gap-2">
+                <Palette className="h-5 w-5" />
+                Theme Settings
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-foreground text-base font-medium">Appearance Mode</Label>
+                  <p className="text-muted-foreground text-sm mb-3">
+                    Choose how the retro theme appears in your interface
+                  </p>
+                  
+                  <RadioGroup value={mode} onValueChange={setMode} className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="light" id="light" />
+                      <Label htmlFor="light" className="text-foreground cursor-pointer">
+                        Light Mode
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="dark" id="dark" />
+                      <Label htmlFor="dark" className="text-foreground cursor-pointer">
+                        Dark Mode
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="system" id="system" />
+                      <Label htmlFor="system" className="text-foreground cursor-pointer">
+                        System Preference (recommended)
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                  
+                  <div className="mt-3 p-3 bg-muted/50 rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      Currently using: <span className="font-medium text-foreground">{resolvedTheme} mode</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Admin Only Theme Management */}
+          <AdminOnly>
+            <Card className="bg-card/80 backdrop-blur border-border/20 border-accent/20">
+              <CardHeader>
+                <CardTitle className="text-foreground flex items-center gap-2">
+                  <Palette className="h-5 w-5 text-accent" />
+                  Theme Management (Admin)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 bg-accent/10 rounded-lg border border-accent/20">
+                    <p className="text-sm text-foreground mb-2">
+                      <strong>Current Theme:</strong> Retro 1950s Theme
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      This platform uses a carefully crafted retro theme inspired by 1950s design. 
+                      Theme customization is restricted to administrators to maintain design consistency.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => router.push('/themes')}
+                      className="border-accent/30 text-accent hover:bg-accent/10"
+                    >
+                      Advanced Theme Settings
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </AdminOnly>
 
           {/* Privacy Settings Status */}
           <Card className="bg-slate-800 border-slate-700">

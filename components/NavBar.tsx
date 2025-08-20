@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MusicNoteIcon } from '@/components/ui/theme-icons';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { useIsAdmin } from '@/components/AdminOnly';
 import { 
   User, 
   LogOut, 
@@ -22,6 +23,7 @@ import { cn } from '@/lib/utils';
 
 export function NavBar() {
   const { user, loading, signOut } = useAuth();
+  const { isAdmin } = useIsAdmin();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -37,7 +39,9 @@ export function NavBar() {
       { name: 'Dashboard', href: '/dashboard' as const, icon: BarChart3 },
       { name: 'Community', href: '/community' as const, icon: Users },
     ] : []),
-    { name: 'Themes', href: '/themes' as const, icon: Palette },
+    ...(isAdmin ? [
+      { name: 'Themes', href: '/themes' as const, icon: Palette },
+    ] : []),
   ];
 
   const isActive = (href: string) => {
