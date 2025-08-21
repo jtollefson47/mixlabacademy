@@ -6,6 +6,13 @@ test.describe('Accessibility Audits', () => {
     // Skip for Firefox and Safari as Lighthouse only works with Chromium
     test.skip(browserName !== 'chromium', 'Lighthouse accessibility audit only runs on Chromium')
     
+    // Additional CI stability measures
+    const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true'
+    if (isCI) {
+      // Extra wait for CI environment stability
+      await page.waitForTimeout(3000)
+    }
+    
     // Verify page loads correctly first
     await page.goto('/')
     await page.waitForLoadState('networkidle')
@@ -13,8 +20,30 @@ test.describe('Accessibility Audits', () => {
     // Ensure the page has basic content before running Lighthouse
     await expect(page.getByRole('heading', { name: /learn audio engineering by playing/i })).toBeVisible({ timeout: 15000 })
     
-    // Run Lighthouse accessibility audit
-    const a11yResult = await runLighthouseA11yAudit(page, '/')
+    // Run Lighthouse accessibility audit with retry logic
+    let a11yResult
+    let lastError
+    const maxRetries = isCI ? 3 : 1
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`Lighthouse attempt ${attempt}/${maxRetries} for Home page`)
+        a11yResult = await runLighthouseA11yAudit(page, '/')
+        break // Success, exit retry loop
+      } catch (error) {
+        lastError = error
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        console.warn(`Lighthouse attempt ${attempt} failed:`, errorMessage)
+        if (attempt < maxRetries) {
+          await page.waitForTimeout(2000) // Wait before retry
+        }
+      }
+    }
+    
+    if (!a11yResult) {
+      const errorMessage = lastError instanceof Error ? lastError.message : String(lastError)
+      throw new Error(`Lighthouse audit failed after ${maxRetries} attempts. Last error: ${errorMessage}`)
+    }
     
     // Log the score for visibility
     console.log(`Accessibility score for Home page: ${a11yResult.score}/100`)

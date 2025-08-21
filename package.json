@@ -13,6 +13,7 @@
     "test:e2e": "playwright test",
     "test:a11y": "playwright test tests/e2e/accessibility.spec.ts --project=chromium",
     "validate:pre-push": "node scripts/validate-before-push.js",
+    "validate:ci-compat": "node scripts/validate-ci-compatibility.js",
     "e2e:install": "playwright install",
     "prepare": "husky",
     "generate:page": "node scripts/generate-page.js",
