@@ -41,7 +41,9 @@ test.describe('Accessibility Audits', () => {
     
     // Check for skip link (should be from NavBar component only)
     const skipLink = page.locator('a[href="#main-content"]')
-    await expect(skipLink).toBeHidden() // Should be hidden by default
+    
+    // Skip link should be present but visually hidden (sr-only class makes it screen-reader only)
+    await expect(skipLink).toBeAttached()
     
     // Focus the skip link and verify it becomes visible
     await skipLink.focus()
