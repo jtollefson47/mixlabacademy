@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { Page } from '@playwright/test'
 
 /**
- * CI Environment Detection and Configuration
- * This file provides utilities for handling differences between local and CI environments
+ * CI Configuration and Utilities
+ * Provides centralized configuration for CI/local environment handling
  */
 
 export const CI_CONFIG = {
@@ -14,10 +14,42 @@ export const CI_CONFIG = {
     lighthouse: process.env.CI === 'true' ? 120000 : 60000,
     element: process.env.CI === 'true' ? 20000 : 10000,
     stabilization: process.env.CI === 'true' ? 5000 : 2000
+  },
+
+  async retryOperation<T>(
+    operation: () => Promise<T>,
+    maxRetries: number,
+    operationName: string
+  ): Promise<T> {
+    let lastError: unknown
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`${operationName} - Attempt ${attempt}/${maxRetries}`)
+        const result = await operation()
+        if (attempt > 1) {
+          console.log(`${operationName} succeeded on attempt ${attempt}`)
+        }
+        return result
+      } catch (error) {
+        lastError = error
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        console.warn(`${operationName} - Attempt ${attempt} failed:`, errorMessage)
+        
+        if (attempt < maxRetries) {
+          const delay = attempt * 1000 // Progressive backoff: 1s, 2s, 3s
+          console.log(`Waiting ${delay}ms before retry...`)
+          await new Promise(resolve => setTimeout(resolve, delay))
+        }
+      }
+    }
+    
+    const finalError = lastError instanceof Error ? lastError : new Error(String(lastError))
+    throw finalError || new Error(`${operationName} failed after ${maxRetries} attempts`)
   }
 }
 
-export async function waitForStableEnvironment(page: any) {
+export async function waitForStableEnvironment(page: Page) {
   // Enhanced stability waiting for CI
   if (CI_CONFIG.isCI) {
     console.log('CI environment detected - applying enhanced stability measures')
@@ -28,7 +60,7 @@ export async function waitForStableEnvironment(page: any) {
     
     // Additional check for page readiness
     await page.evaluate(() => {
-      return new Promise(resolve => {
+      return new Promise<boolean>(resolve => {
         if (document.readyState === 'complete') {
           resolve(true)
         } else {
@@ -41,36 +73,4 @@ export async function waitForStableEnvironment(page: any) {
 
 export function getTestTimeout() {
   return CI_CONFIG.isCI ? 300000 : 120000 // 5 minutes for CI, 2 minutes locally
-}
-
-export async function retryOperation<T>(
-  operation: () => Promise<T>,
-  operationName: string,
-  maxRetries = CI_CONFIG.retryAttempts
-): Promise<T> {
-  let lastError: any
-  
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      console.log(`${operationName} - Attempt ${attempt}/${maxRetries}`)
-      const result = await operation()
-      if (attempt > 1) {
-        console.log(`${operationName} succeeded on attempt ${attempt}`)
-      }
-      return result
-    } catch (error) {
-      lastError = error
-      const errorMessage = error instanceof Error ? error.message : String(error)
-      console.warn(`${operationName} attempt ${attempt} failed:`, errorMessage)
-      
-      if (attempt < maxRetries) {
-        const waitTime = attempt * 1000 // Progressive backoff
-        console.log(`Waiting ${waitTime}ms before retry...`)
-        await new Promise(resolve => setTimeout(resolve, waitTime))
-      }
-    }
-  }
-  
-  const errorMessage = lastError instanceof Error ? lastError.message : String(lastError)
-  throw new Error(`${operationName} failed after ${maxRetries} attempts. Last error: ${errorMessage}`)
 }
