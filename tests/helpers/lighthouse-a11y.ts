@@ -16,8 +16,14 @@ export async function runLighthouseA11yAudit(
   url: string
 ): Promise<LighthouseA11yResult> {
   try {
+    // Check if we're in CI environment
+    const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true'
+    const baseUrl = isCI ? 'http://localhost:3000' : 'http://127.0.0.1:3000'
+    
     // Navigate to the page with proper base URL
-    const fullUrl = url.startsWith('http') ? url : `http://127.0.0.1:3000${url}`
+    const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
+    console.log(`Running Lighthouse audit on: ${fullUrl} (CI: ${isCI})`)
+    
     await page.goto(fullUrl, { waitUntil: 'networkidle', timeout: 30000 })
     
     // Wait for page to be fully loaded and ensure content is present
@@ -25,14 +31,15 @@ export async function runLighthouseA11yAudit(
     await page.waitForLoadState('domcontentloaded')
     
     // Verify the page has content (not blank)
-    await page.waitForSelector('body', { timeout: 10000 })
+    await page.waitForSelector('body', { timeout: 15000 }) // Increased for CI
     const bodyContent = await page.locator('body').innerHTML()
     if (!bodyContent || bodyContent.trim().length < 100) {
       throw new Error(`Page appears to be blank or has minimal content: ${fullUrl}`)
     }
     
-    // Wait a bit more for any dynamic content
-    await page.waitForTimeout(3000) // Increased from 2000 to 3000
+    // Wait longer in CI environment for stability
+    const waitTime = isCI ? 5000 : 3000
+    await page.waitForTimeout(waitTime)
     
     // Run Lighthouse audit focused ONLY on accessibility
     const lighthouseResult = await playAudit({
