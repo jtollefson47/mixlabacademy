@@ -6,6 +6,13 @@ test.describe('Accessibility Audits', () => {
     // Skip for Firefox and Safari as Lighthouse only works with Chromium
     test.skip(browserName !== 'chromium', 'Lighthouse accessibility audit only runs on Chromium')
     
+    // Verify page loads correctly first
+    await page.goto('/')
+    await page.waitForLoadState('networkidle')
+    
+    // Ensure the page has basic content before running Lighthouse
+    await expect(page.getByRole('heading', { name: /learn audio engineering by playing/i })).toBeVisible({ timeout: 15000 })
+    
     // Run Lighthouse accessibility audit
     const a11yResult = await runLighthouseA11yAudit(page, '/')
     
@@ -98,18 +105,60 @@ test.describe('Accessibility Audits', () => {
   test('Games page meets accessibility standards', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'Lighthouse accessibility audit only runs on Chromium')
     
+    // Verify page loads correctly first
+    await page.goto('/games')
+    await page.waitForLoadState('networkidle')
+    
+    // Ensure the page has basic content before running Lighthouse
+    await expect(page.getByRole('heading', { name: /games/i })).toBeVisible({ timeout: 15000 })
+    
     const a11yResult = await runLighthouseA11yAudit(page, '/games')
     console.log(`Accessibility score for Games page: ${a11yResult.score}/100`)
     
-    assertA11yScore(a11yResult, 95)
+    if (a11yResult.violations.length > 0) {
+      console.log('Accessibility violations found:', a11yResult.violations)
+    }
+    
+    try {
+      assertA11yScore(a11yResult, 95)
+    } catch (error) {
+      // Provide more detailed error information
+      throw new Error(
+        'Games page accessibility audit failed:\n' +
+        `Score: ${a11yResult.score}/100 (minimum required: 95)\n` +
+        `Violations: ${a11yResult.violations.length}\n` +
+        `${error instanceof Error ? error.message : String(error)}`
+      )
+    }
   })
   
   test('EQ Match page meets accessibility standards', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'Lighthouse accessibility audit only runs on Chromium')
     
+    // Verify page loads correctly first
+    await page.goto('/games/eq-match')
+    await page.waitForLoadState('networkidle')
+    
+    // Ensure the page has basic content before running Lighthouse
+    await expect(page.getByRole('heading', { name: /eq match/i })).toBeVisible({ timeout: 15000 })
+    
     const a11yResult = await runLighthouseA11yAudit(page, '/games/eq-match')
     console.log(`Accessibility score for EQ Match page: ${a11yResult.score}/100`)
     
-    assertA11yScore(a11yResult, 94) // Lowered from 95 to accommodate current score
+    if (a11yResult.violations.length > 0) {
+      console.log('Accessibility violations found:', a11yResult.violations)
+    }
+    
+    try {
+      assertA11yScore(a11yResult, 94) // Lowered from 95 to accommodate current score
+    } catch (error) {
+      // Provide more detailed error information
+      throw new Error(
+        'EQ Match page accessibility audit failed:\n' +
+        `Score: ${a11yResult.score}/100 (minimum required: 94)\n` +
+        `Violations: ${a11yResult.violations.length}\n` +
+        `${error instanceof Error ? error.message : String(error)}`
+      )
+    }
   })
 })
