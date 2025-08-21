@@ -138,6 +138,7 @@ export default function EqMatchPage() {
       </Card>
 
       {/* EQ Graph with Integrated Controls */}
+      <h2 className="text-xl font-semibold mb-4">Interactive EQ Graph</h2>
       <div className="mb-6">
         <EqGraph
           targetBands={TARGET_BANDS}
@@ -199,7 +200,7 @@ export default function EqMatchPage() {
 
             {/* Per-band breakdown */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-center">Frequency Breakdown:</h3>
+              <h2 className="font-semibold text-center">Frequency Breakdown:</h2>
               {currentScore.perBand.map((result, index) => (
                 <div key={index} className="flex justify-between items-center p-3 bg-white/50 dark:bg-slate-800/50 rounded-lg">
                   <span className="font-medium">{result.freq}Hz</span>

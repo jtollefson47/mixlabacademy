@@ -15,40 +15,45 @@ export async function runLighthouseA11yAudit(
   page: Page,
   url: string
 ): Promise<LighthouseA11yResult> {
-  // Navigate to the page with proper base URL
-  const fullUrl = url.startsWith('http') ? url : `http://127.0.0.1:3000${url}`
-  await page.goto(fullUrl, { waitUntil: 'networkidle', timeout: 30000 })
-  
-  // Wait for page to be fully loaded and ensure content is present
-  await page.waitForLoadState('networkidle')
-  await page.waitForLoadState('domcontentloaded')
-  
-  // Verify the page has content (not blank)
-  await page.waitForSelector('body', { timeout: 10000 })
-  const bodyContent = await page.locator('body').innerHTML()
-  if (!bodyContent || bodyContent.trim().length < 100) {
-    throw new Error(`Page appears to be blank or has minimal content: ${fullUrl}`)
-  }
-  
-  // Wait a bit more for any dynamic content
-  await page.waitForTimeout(2000)
-  
-  // Run Lighthouse audit focused ONLY on accessibility
-  const lighthouseResult = await playAudit({
-    page,
-    port: 9222,
-    config: {
-      extends: 'lighthouse:default',
-      settings: {
-        onlyCategories: ['accessibility'],
-        formFactor: 'desktop',
-        screenEmulation: {
-          mobile: false,
-          width: 1350,
-          height: 940,
-          deviceScaleFactor: 1,
-          disabled: false,
-        },
+  try {
+    // Navigate to the page with proper base URL
+    const fullUrl = url.startsWith('http') ? url : `http://127.0.0.1:3000${url}`
+    await page.goto(fullUrl, { waitUntil: 'networkidle', timeout: 30000 })
+    
+    // Wait for page to be fully loaded and ensure content is present
+    await page.waitForLoadState('networkidle')
+    await page.waitForLoadState('domcontentloaded')
+    
+    // Verify the page has content (not blank)
+    await page.waitForSelector('body', { timeout: 10000 })
+    const bodyContent = await page.locator('body').innerHTML()
+    if (!bodyContent || bodyContent.trim().length < 100) {
+      throw new Error(`Page appears to be blank or has minimal content: ${fullUrl}`)
+    }
+    
+    // Wait a bit more for any dynamic content
+    await page.waitForTimeout(3000) // Increased from 2000 to 3000
+    
+    // Run Lighthouse audit focused ONLY on accessibility
+    const lighthouseResult = await playAudit({
+      page,
+      port: 9222,
+      config: {
+        extends: 'lighthouse:default',
+        settings: {
+          // CRITICAL: Only run accessibility category, no performance
+          onlyCategories: ['accessibility'],
+          formFactor: 'desktop',
+          screenEmulation: {
+            mobile: false,
+            width: 1350,
+            height: 940,
+            deviceScaleFactor: 1,
+            disabled: false,
+          },
+          // Explicitly disable all performance-related gatherers
+          disableStorageReset: true,
+          throttlingMethod: 'provided',
         // Disable all performance audits completely
         skipAudits: [
           'largest-contentful-paint',
@@ -154,10 +159,24 @@ export async function runLighthouseA11yAudit(
         ],
       },
     },
-    // No thresholds here - we handle assertions in individual tests
+    // CRITICAL: No thresholds for performance - only check accessibility
+    thresholds: {
+      accessibility: 1, // This will be overridden by individual test assertions
+    },
   })
 
   const a11yScore = Math.round((lighthouseResult.lhr.categories.accessibility?.score || 0) * 100)
+  
+  // Check for performance scoring issues and warn (but don't fail)
+  const performanceScore = lighthouseResult.lhr.categories.performance?.score
+  if (performanceScore === 0 || performanceScore === null) {
+    console.warn(`⚠️  Performance score is ${performanceScore} - this is expected since we only run accessibility audits`)
+  }
+  
+  // Validate that accessibility score was computed
+  if (a11yScore === 0 && lighthouseResult.lhr.categories.accessibility?.score === null) {
+    throw new Error('Lighthouse failed to compute accessibility score. Check if the page loaded correctly.')
+  }
   
   // Extract basic information about failed audits
   const violations: Array<{id: string, impact: string, description: string, helpUrl: string}> = []
@@ -175,9 +194,23 @@ export async function runLighthouseA11yAudit(
     }
   }
 
-  return {
-    score: a11yScore,
-    violations,
+    return {
+      score: a11yScore,
+      violations,
+    }
+  } catch (error) {
+    console.error('Lighthouse audit failed:', error)
+    
+    // Return a default result with 0 score and error details
+    return {
+      score: 0,
+      violations: [{
+        id: 'lighthouse-error',
+        impact: 'high',
+        description: `Lighthouse audit failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        helpUrl: 'https://lighthouse-ci.com/docs/troubleshooting/'
+      }]
+    }
   }
 }
 
